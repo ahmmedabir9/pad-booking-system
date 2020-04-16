@@ -1,51 +1,48 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const bookingSchema = mongoose.Schema({
   bandname: {
     type: String,
-    require: true
+    require: true,
   },
   bandmobile: {
     type: String,
-    require: true
+    require: true,
   },
   bandmail: {
     type: String,
-    require: true
+    require: true,
   },
   pad: {
     type: String,
-    require: true
+    require: true,
   },
   shift: {
     type: String,
-    require: true
+    require: true,
   },
   date: {
     type: String,
-    require: true
+    require: true,
   },
   bookingid: {
     type: String,
-    require: true
+    require: true,
   },
   payment: {
     type: Number,
-    require: true
+    require: true,
   },
   message: {
     type: String,
-    require: true
+    require: true,
   },
   status: {
     type: Number,
-    default: 0
+    default: 0,
   },
-  extra: {
-    type: String
-  }
 });
 
-const Booking = mongoose.model("Booking", bookingSchema);
+const Booking = mongoose.model('Booking', bookingSchema);
 
 module.exports = { Booking };

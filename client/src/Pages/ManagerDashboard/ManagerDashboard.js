@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import clsx from 'clsx';
-import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -21,7 +20,9 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 
 import { connect } from 'react-redux';
-import { logout } from '../../store/_actions/authActions';
+import { loadMyPad } from '../../store/_actions/padActions';
+import { loadMyShift } from '../../store/_actions/shiftActions';
+import { loadMyBooking } from '../../store/_actions/bookingAction';
 
 const drawerWidth = 240;
 
@@ -88,33 +89,14 @@ function ManagerDashboard(props) {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
-  const user = props.auth.user;
+  useEffect(() => {
+    props.loadMyPad();
+    props.loadMyShift();
+  }, []);
 
-  const pad = {
-    padname: 'Get Funked Practice Pad',
-    location: 'Uttara',
-  };
-
-  const padShift = [
-    {
-      shiftName: 'Evening',
-      startTime: '6:00 PM',
-      endTime: '9:00 PM',
-      rent: 700,
-    },
-    {
-      shiftName: 'Night',
-      startTime: '9:00 PM',
-      endTime: '12:00 PM',
-      rent: 700,
-    },
-    {
-      shiftName: 'Afternoon',
-      startTime: '3:00 PM',
-      endTime: '6:00 PM',
-      rent: 700,
-    },
-  ];
+  const manager = props.auth.user;
+  const { mypad } = props;
+  const padShift = props.myshift;
 
   const booking = [
     {
@@ -133,19 +115,7 @@ function ManagerDashboard(props) {
     },
   ];
 
-  console.log(user);
-
   // const [pad, setPad] = React.useState([]);
-
-  useEffect(() => {
-    // axios
-    //   .get('http://localhost:5000/api/pads')
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     setPad(res.data);
-    //   })
-    //   .catch((err) => console.log(err));
-  }, []);
 
   return (
     <div className={classes.root}>
@@ -197,25 +167,36 @@ function ManagerDashboard(props) {
       </Drawer>
       <main className={classes.content}>
         <Container maxWidth='lg' className={classes.container}>
-          <Route
-            path='/ManagerDashboard'
-            exact
-            render={() => (
-              <Dashboard
-                manager={user}
-                pad={pad}
-                booking={booking}
-                padShift={padShift}
-              />
-            )}
-          />
-          <Route
-            path='/ManagerDashboard/Shift'
-            render={() => <Shift padShift={padShift} />}
-          />
-          <Route path='/ManagerDashboard/Booking' render={() => <Booking />} />
-          <Route path='/ManagerDashboard/PadInfo' render={() => <PadInfo />} />
-          <Route path='/ManagerDashboard/Manager' render={() => <Manager />} />
+          <Switch>
+            <Route
+              path='/ManagerDashboard'
+              exact
+              render={() => (
+                <Dashboard
+                  manager={manager}
+                  pad={mypad}
+                  booking={booking}
+                  padShift={padShift}
+                />
+              )}
+            />
+            <Route
+              path='/ManagerDashboard/Shift'
+              render={() => <Shift pad={mypad} padShift={padShift} />}
+            />
+            <Route
+              path='/ManagerDashboard/Booking'
+              render={() => <Booking pad={mypad} />}
+            />
+            <Route
+              path='/ManagerDashboard/PadInfo'
+              render={() => <PadInfo pad={mypad} />}
+            />
+            <Route
+              path='/ManagerDashboard/Manager'
+              render={() => <Manager />}
+            />
+          </Switch>
         </Container>
       </main>
     </div>
@@ -224,6 +205,13 @@ function ManagerDashboard(props) {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
+  mypad: state.mypad,
+  myshift: state.myshift,
+  mybooking: state.mybooking,
 });
 
-export default connect(mapStateToProps, { logout })(ManagerDashboard);
+export default connect(mapStateToProps, {
+  loadMyPad,
+  loadMyShift,
+  loadMyBooking,
+})(ManagerDashboard);

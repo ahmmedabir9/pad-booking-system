@@ -1,6 +1,15 @@
 import React, { Component, Suspense } from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Switch,
+  Redirect,
+} from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
+
+import { connect } from 'react-redux';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Components/Navbar';
 import NavBar from './Components/Navbar';
@@ -32,10 +41,13 @@ class App extends Component {
                 <Route path='/Booking/:id' component={BookingPage} />
               </Switch>
             </Suspense>
-            <Route
-              path='/ManagerDashboard'
-              render={() => <ManagerDashboard />}
-            />
+
+            <Switch>
+              <Route
+                path='/ManagerDashboard'
+                render={() => <ManagerDashboard />}
+              />
+            </Switch>
           </div>
           <Route path='/Login' component={LogInPage} />
           <Route path='/Signup' component={SignUpPage} />
@@ -46,4 +58,8 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStatetoProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStatetoProps, null)(App);

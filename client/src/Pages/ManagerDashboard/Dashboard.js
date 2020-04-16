@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+
 import clsx from 'clsx';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
@@ -91,7 +92,6 @@ const useStyles = makeStyles((theme) => ({
 function Dashboard(props) {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-  const [pad, setPad] = React.useState([]);
 
   return (
     <div>
@@ -109,7 +109,7 @@ function Dashboard(props) {
           </Grid>
           <Grid item xs={12} md={6} lg={6}>
             <Paper className={classes.paper}>
-              <Shift padShift={props.padShift} />
+              <Shift pad={props.pad} padShift={props.padShift} />
             </Paper>
           </Grid>
           <Grid item xs={12} md={6} lg={6}>

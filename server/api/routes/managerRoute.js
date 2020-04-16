@@ -7,9 +7,8 @@ const jwt = require('jsonwebtoken');
 
 const { Manager } = require('../models/manager');
 const { Pad } = require('../models/pad');
-const { auth } = require('../../config/auth');
 
-router.get('/auth', auth, (req, res) => {
+router.get('/auth', (req, res) => {
   res.status(200).json({
     _id: req.manager._id,
     email: req.manager.email,
@@ -99,6 +98,8 @@ router.post('/register', (req, res, next) => {
 
 //login
 router.post('/login', (req, res, next) => {
+  console.log(req.user);
+
   let email = req.body.email;
   let password = req.body.password;
 
@@ -153,7 +154,7 @@ router.post('/login', (req, res, next) => {
     });
 });
 
-router.get('/logout', auth, (req, res) => {
+router.get('/logout', (req, res) => {
   Manager.findOneAndUpdate(
     { _id: req.manager._id },
     { token: '', tokenExp: '' },

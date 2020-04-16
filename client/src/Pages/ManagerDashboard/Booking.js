@@ -1,96 +1,172 @@
 import React, { useState, useEffect } from 'react';
-import clsx from 'clsx';
-import axios from 'axios';
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
-import Box from '@material-ui/core/Box';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import Deposits from './Components/UserCard';
-import Orders from './Components/Booking';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Title from './Components/Title';
+import Button from '@material-ui/core/Button';
+import { connect } from 'react-redux';
 
-const drawerWidth = 240;
+import TextField from '@material-ui/core/TextField';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Avatar from '@material-ui/core/Avatar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
+
+import Dialog from '@material-ui/core/Dialog';
+import { loadMyBooking } from '../../store/_actions/bookingAction';
+import { loadMyPad } from '../../store/_actions/padActions';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
-  },
-  toolbarIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: 36,
-  },
-  menuButtonHidden: {
-    display: 'none',
-  },
-  title: {
-    flexGrow: 1,
-  },
-  appBarSpacer: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    height: '70vh',
-    overflow: 'auto',
-  },
-  container: {
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-  },
-  paper: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
-  },
-  fixedHeight: {
-    height: 240,
+  seeMore: {
+    marginTop: theme.spacing(3),
   },
 }));
 
-export default function Booking(props) {
+function Booking(props) {
   const classes = useStyles();
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-  const [pad, setPad] = React.useState([]);
+  const [open, setOpen] = React.useState(false);
+  const [id, setId] = React.useState('');
+
+  useEffect(() => {
+    props.loadMyBooking(props.pad);
+  }, []);
+  let { mybooking } = props;
+
+  const handleClickOpen = (id) => {
+    setOpen(true);
+    setId(id);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setId('');
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const data = {
+      shiftname: e.target.shiftname.value,
+      shiftstart: e.target.shiftstart.value,
+      shiftend: e.target.shiftend.value,
+      rent: e.target.rent.value,
+      pad: props.pad.slug,
+    };
+
+    props.addMyShift(data);
+
+    console.log(data);
+
+    handleClose();
+  };
 
   return (
-    <div>
-      <h1>Booking Info</h1>
-    </div>
+    <React.Fragment>
+      <Title>Booking</Title>
+      {mybooking ? (
+        <Table size='small'>
+          <TableHead>
+            <TableRow>
+              <TableCell>Booking ID</TableCell>
+              <TableCell>Band</TableCell>
+              <TableCell>Phone</TableCell>
+              <TableCell>Shift</TableCell>
+              <TableCell>Amount</TableCell>
+              <TableCell>Status</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {props.mybooking.map((booking) => (
+              <TableRow key={booking}>
+                <TableCell>{booking.bookingid}</TableCell>
+                <TableCell>{booking.bandname}</TableCell>
+                <TableCell>{booking.bandmobile}</TableCell>
+                <TableCell>{booking.shift}</TableCell>
+                <TableCell>{booking.amount}</TableCell>
+                <TableCell>{booking.status}</TableCell>
+                <TableCell>
+                  <Button
+                    variant='outlined'
+                    color='secondary'
+                    size='small'
+                    onClick={() => {
+                      handleClickOpen(booking._id);
+                    }}>
+                    Update
+                  </Button>
+                  <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby='form-dialog-title'>
+                    <form
+                      onSubmit={handleSubmit}
+                      className={classes.form}
+                      noValidate>
+                      <DialogTitle id='form-dialog-title'>
+                        {booking.bookingid}
+                      </DialogTitle>
+                      <DialogTitle id='form-dialog-title'>
+                        {booking._id}
+                      </DialogTitle>
+                      <DialogContent>
+                        <Grid container spacing={2}>
+                          <Grid item xs={12}>
+                            <TextField
+                              variant='outlined'
+                              required
+                              fullWidth
+                              id='shiftname'
+                              label='Shift Name'
+                              name='shiftname'
+                            />
+                          </Grid>
+                        </Grid>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={handleClose} color='primary'>
+                          Cancel
+                        </Button>
+                        <Button type='submit' color='primary'>
+                          Save
+                        </Button>
+                      </DialogActions>
+                    </form>
+                  </Dialog>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+          <Button
+            variant='outlined'
+            color='primary'
+            size='small'
+            onClick={handleClickOpen}>
+            Add new Shift
+          </Button>
+        </Table>
+      ) : (
+        <h2>No Bookings</h2>
+      )}
+    </React.Fragment>
   );
 }
+
+const mapStateToProps = (state) => ({
+  mybooking: state.mybooking,
+});
+
+export default connect(mapStateToProps, {
+  loadMyBooking,
+})(Booking);

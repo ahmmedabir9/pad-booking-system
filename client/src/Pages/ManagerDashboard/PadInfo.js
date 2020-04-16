@@ -2,23 +2,30 @@ import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+import {
+  addMyPad,
+  removeMyPad,
+  loadMyPad,
+} from '../../store/_actions/padActions';
+
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
-import Box from '@material-ui/core/Box';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
 
 const drawerWidth = 240;
 
@@ -75,20 +82,161 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     overflow: 'auto',
     flexDirection: 'column',
+    alignItems: 'center',
   },
   fixedHeight: {
     height: 240,
   },
 }));
 
-export default function PadInfo(props) {
+function PadInfo(props) {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-  const [pad, setPad] = React.useState([]);
+  const [pad, setPad] = React.useState({});
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleSubmit = (e) => {
+    const data = {
+      padname: e.target.padname.value,
+      padaddress: e.target.padaddress.value,
+      padmobile: e.target.padmobile.value,
+      area: e.target.area.value,
+      adpay: e.target.adpay.value,
+      district: e.target.district.value,
+      padaddress: e.target.padaddress.value,
+    };
+
+    props.addMyPad(data);
+
+    console.log(data);
+    props.loadMyPad();
+    setPad(props.pad);
+    handleClose();
+
+    e.preventDefault();
+  };
+
+  const handleDelete = () => {
+    props.removeMyPad(pad._id);
+    props.loadMyPad();
+    setPad(props.pad);
+  };
+
+  useEffect(() => {
+    props.loadMyPad();
+    setPad(props.pad);
+  }, []);
 
   return (
     <div>
-      <h1>Pad Info</h1>
+      {!pad._id ? (
+        <div className={classes.paper}>
+          <h1>You dont have any pad</h1>
+          <Button variant='outlined' color='primary' onClick={handleClickOpen}>
+            Create Your Pad
+          </Button>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby='form-dialog-title'>
+            <form onSubmit={handleSubmit} className={classes.form} noValidate>
+              <DialogTitle id='form-dialog-title'>Subscribe</DialogTitle>
+              <DialogContent>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <TextField
+                      variant='outlined'
+                      required
+                      fullWidth
+                      id='padname'
+                      label='Pad Name'
+                      name='padname'
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      variant='outlined'
+                      required
+                      fullWidth
+                      id='padmobile'
+                      label='Contact Number'
+                      name='padmobile'
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      variant='outlined'
+                      required
+                      fullWidth
+                      id='padaddress'
+                      label='Full Address'
+                      name='padaddress'
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      variant='outlined'
+                      required
+                      fullWidth
+                      id='area'
+                      label='Area'
+                      name='area'
+                      placeholder='ex: Uttara'
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      variant='outlined'
+                      required
+                      fullWidth
+                      id='district'
+                      label='District'
+                      name='district'
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      variant='outlined'
+                      required
+                      fullWidth
+                      id='adpay'
+                      label='Advance Payable'
+                      name='adpay'
+                      placeholder='write %'
+                    />
+                  </Grid>
+                </Grid>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color='primary'>
+                  Cancel
+                </Button>
+                <Button type='submit' color='primary'>
+                  Save
+                </Button>
+              </DialogActions>
+            </form>
+          </Dialog>
+        </div>
+      ) : (
+        <div>
+          <h1>{pad.padname}</h1>
+          <Button variant='outlined' color='primary' onClick={handleDelete}>
+            Delete Your Pad
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
+
+export default connect(null, { addMyPad, removeMyPad, loadMyPad })(PadInfo);

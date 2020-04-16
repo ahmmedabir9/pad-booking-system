@@ -1,2 +1,10 @@
-export const SET_USER = 'SET_USER'
-export const USERS_ERROR = 'USERS_ERROR'
+export const SET_USER = 'SET_USER';
+export const USERS_ERROR = 'USERS_ERROR';
+export const LOAD_MYPAD = 'LOAD_MYPAD';
+export const LOAD_MYSHIFT = 'LOAD_MYSHIFT';
+export const ADD_MYPAD = 'ADD_MYPAD';
+export const REMOVE_MYPAD = 'REMOVE_MYPAD';
+export const REMOVE_MYSHIFT = 'REMOVE_MYSHIFT';
+export const ADD_MYSHIFT = 'ADD_MYSHIFT';
+export const LOAD_MYBOOKING = 'LOAD_MYBOOKING';
+export const UPDATE_MYBOOKING = 'UPDATE_MYBOOKING';

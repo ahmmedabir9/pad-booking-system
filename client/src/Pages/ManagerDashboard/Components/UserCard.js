@@ -24,21 +24,11 @@ export default function UserCard(props) {
         {props.pad.padname}
       </Typography>
       <Typography color='textSecondary' className={classes.depositContext}>
-        {props.pad.location}
+        {props.pad.area}
       </Typography>
-      <div>
-        <Link className='link' to={`/Login`}>
-          <Button
-            variant='contained'
-            color='danger'
-            size='small'
-            onClick={() => {
-              props.logout(props.history);
-            }}>
-            Logout
-          </Button>
-        </Link>
-      </div>
+      <Typography color='textSecondary' className={classes.depositContext}>
+        {props.pad.district}
+      </Typography>
     </React.Fragment>
   );
 }

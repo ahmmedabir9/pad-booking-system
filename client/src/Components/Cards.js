@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from "react";
-import PadCard from "./PadCard";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import PadCard from './PadCard';
+import axios from 'axios';
 
-import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   paper: {
     height: 140,
-    width: 100
+    width: 100,
   },
   control: {
-    padding: theme.spacing(2)
-  }
+    padding: theme.spacing(2),
+  },
 }));
 
 export default function Cards() {
@@ -26,25 +26,32 @@ export default function Cards() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/pads")
-      .then(res => {
+      .get('http://localhost:5000/api/pads')
+      .then((res) => {
         console.log(res.data);
         setCards(res.data);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   }, []);
 
   return (
-    <Grid container className={classes.root} spacing={2}>
-      <Grid item xs={12}>
-        <Grid container justify="center" spacing={spacing}>
-          {cards.map(pad => (
-            <Grid key={pad} item>
-              <PadCard key={pad._id} pad={pad} />
-            </Grid>
-          ))}
+    <div container className={classes.root} spacing={2}>
+      <div>
+        <Grid item xs={12}></Grid>
+        <Grid item xs={12}></Grid>
+        <Grid item xs={12}></Grid>
+      </div>
+      <Grid container>
+        <Grid item xs={12}>
+          <Grid container justify='center' spacing={spacing}>
+            {cards.map((pad) => (
+              <Grid key={pad} item>
+                <PadCard key={pad._id} pad={pad} />
+              </Grid>
+            ))}
+          </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 }

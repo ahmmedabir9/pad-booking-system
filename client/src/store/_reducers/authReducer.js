@@ -2,7 +2,7 @@ import * as Types from '../_actions/types';
 
 const init = {
   isAuthenticated: false,
-  user: {},
+  user: null,
   error: {},
 };
 

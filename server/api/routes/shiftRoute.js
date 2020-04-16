@@ -1,71 +1,65 @@
-const bcrypt = require("bcrypt");
-const express = require("express");
+const bcrypt = require('bcrypt');
+const express = require('express');
 const router = express.Router();
 
-const { Shift } = require("../models/shift");
+const { Shift } = require('../models/shift');
 
 //get shift by pad
-router.get("/:id", (req, res, next) => {
+router.get('/:id', (req, res) => {
   Shift.find({ pad: req.params.id })
-    .then(shifts => {
+    .then((shifts) => {
       res.status(200).json(shifts);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
       res.status(500).json({
-        message: "Error",
-        error: err
+        message: 'Error',
+        error: err,
       });
     });
 });
 
 //insert new Pad
-router.post("/add-pad", (req, res, next) => {
+router.post('/add-pad', (req, res, next) => {
   let pad = new Pad({
     padname: req.body.padname,
     padmobile: req.body.padmobile,
     padaddress: req.body.padaddress,
     area: req.body.area,
-    district: req.body.district
+    district: req.body.district,
   });
 
   pad
     .save()
-    .then(result => {
+    .then((result) => {
       res.status(201).json({
-        message: "Pad Created",
-        pad: result
+        message: 'Pad Created',
+        pad: result,
       });
     })
-    .catch(error => {
+    .catch((error) => {
       res.json({
-        error
+        error,
       });
     });
 });
 
-
 //get pad by id
-router.get("/:id", (req, res) => {
-
-  var type = req.query.type
+router.get('/:id', (req, res) => {
+  var type = req.query.type;
   var id = req.query.id;
 
   Pad.findOne({ _id: req.params.id })
-    .then(pad => {
+    .then((pad) => {
       res.status(200).json(pad);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
       res.status(500).json({
-        message: "Error",
-        error: err
+        message: 'Error',
+        error: err,
       });
     });
 });
-
-
-
-
 
 module.exports = router;

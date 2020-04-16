@@ -1,20 +1,21 @@
-const { Manager } = require('../api/models/manager');
+const passport = require('passport');
 
-let auth = (req, res, next) => {
-  let token = req.cookies.w_auth;
+module.exports = (req, res, next) => {
+  passport.authenticate('jwt', (err, manager, info) => {
+    if (err) {
+      console.log(info);
+      console.log(err);
 
-  Manager.findByToken(token, (err, manager) => {
-    if (err) throw err;
-    if (!manager)
-      return res.json({
-        isAuth: false,
-        error: true
+      return next(err);
+    }
+
+    if (!manager) {
+      res.status(400).json({
+        message: 'Authentication Failled',
       });
+    }
 
-    req.token = token;
     req.manager = manager;
-    next();
-  });
+    return next();
+  })(req, res, next);
 };
-
-module.exports = { auth };

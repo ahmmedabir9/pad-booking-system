@@ -1,29 +1,37 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const shiftSchema = mongoose.Schema({
   shiftname: {
     type: String,
     require: true,
-    default: "Practice Sessiion"
+    default: 'Practice Sessiion',
+  },
+  slug: {
+    type: String,
+    require: true,
   },
   pad: {
     type: String,
-    require: true
+    require: true,
+  },
+  manager: {
+    type: String,
+    require: true,
   },
   shiftstart: {
     type: String,
-    require: true
+    require: true,
   },
   shiftend: {
     type: String,
-    require: true
+    require: true,
   },
   rent: {
     type: Number,
-    require: true
-  }
+    require: true,
+  },
 });
 
-const Shift = mongoose.model("Shift", shiftSchema);
+const Shift = mongoose.model('Shift', shiftSchema);
 
 module.exports = { Shift };

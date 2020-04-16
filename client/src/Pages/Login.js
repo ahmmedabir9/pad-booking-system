@@ -53,6 +53,8 @@ function Login(props) {
     event.preventDefault();
   };
 
+  console.log(props);
+
   return (
     <Container component='main' maxWidth='xs'>
       <CssBaseline />
@@ -63,6 +65,11 @@ function Login(props) {
         <Typography component='h1' variant='h5'>
           Login
         </Typography>
+        {props.message && (
+          <Typography component='h1' variant='h5'>
+            {props.message}
+          </Typography>
+        )}
         <form onSubmit={submitHandler} className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -99,7 +106,7 @@ function Login(props) {
           </Button>
           <Grid container justify='flex-end'>
             <Grid item>
-              <Link href='#' variant='body2'>
+              <Link href='/Signup' variant='body2'>
                 New User ? Sign Up
               </Link>
             </Grid>
