@@ -9,6 +9,8 @@ import {
   loadMyPad,
 } from '../../store/_actions/padActions';
 
+import FileUpload from './utils/FileUpload';
+
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -93,7 +95,7 @@ function PadInfo(props) {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   const [pad, setPad] = React.useState({});
-
+  const [Image, setImage] = useState();
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -131,10 +133,26 @@ function PadInfo(props) {
     setPad(props.pad);
   };
 
+  const handleClickOpenUpdate = () => {
+    setOpen(true);
+  };
+
+  const handleCloseUpdate = () => {
+    setOpen(false);
+  };
+
+  const handleUpdate = () => {
+    handleClickOpenUpdate();
+  };
+
   useEffect(() => {
     props.loadMyPad();
     setPad(props.pad);
   }, []);
+
+  const updateImages = (newImage) => {
+    setImage(newImage);
+  };
 
   return (
     <div>
@@ -144,6 +162,7 @@ function PadInfo(props) {
           <Button variant='outlined' color='primary' onClick={handleClickOpen}>
             Create Your Pad
           </Button>
+
           <Dialog
             open={open}
             onClose={handleClose}
@@ -228,13 +247,117 @@ function PadInfo(props) {
           </Dialog>
         </div>
       ) : (
-        <div>
+        <div className={classes.paper}>
           <h1>{pad.padname}</h1>
           <Button variant='outlined' color='primary' onClick={handleDelete}>
             Delete Your Pad
           </Button>
+          <Button variant='outlined' color='primary' onClick={handleUpdate}>
+            Update Pad Details
+          </Button>
         </div>
       )}
+
+      <Dialog
+        open={open}
+        onClose={handleCloseUpdate}
+        aria-labelledby='form-dialog-title'>
+        <form onSubmit={handleSubmit} className={classes.form} noValidate>
+          <DialogTitle id='form-dialog-title'>Subscribe</DialogTitle>
+          <DialogContent>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  variant='outlined'
+                  required
+                  fullWidth
+                  id='padname'
+                  label='Pad Name'
+                  name='padname'
+                  placeholder={pad.padname}
+                  value={pad.padname}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant='outlined'
+                  required
+                  fullWidth
+                  id='padmobile'
+                  label='Contact Number'
+                  name='padmobile'
+                  placeholder={pad.padmobile}
+                  value={pad.padmobile}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant='outlined'
+                  required
+                  fullWidth
+                  id='padaddress'
+                  label='Full Address'
+                  name='padaddress'
+                  placeholder={pad.padaddress}
+                  value={pad.padaddress}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant='outlined'
+                  required
+                  fullWidth
+                  id='area'
+                  label='Area'
+                  name='area'
+                  placeholder='ex: Uttara'
+                  placeholder={pad.area}
+                  value={pad.area}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant='outlined'
+                  required
+                  fullWidth
+                  id='district'
+                  label='District'
+                  name='district'
+                  placeholder={pad.district}
+                  value={pad.district}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant='outlined'
+                  required
+                  fullWidth
+                  id='adpay'
+                  label='Advance Payable'
+                  name='adpay'
+                  placeholder='write %'
+                  placeholder={pad.adpay}
+                  value={pad.adpay}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FileUpload
+                  refreshFunction={updateImages}
+                  setImage={setImage()}
+                />
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color='primary'>
+              Cancel
+            </Button>
+            <Button type='submit' color='primary'>
+              Save
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
     </div>
   );
 }

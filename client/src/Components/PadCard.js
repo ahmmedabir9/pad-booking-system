@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 export default function PadCard(props) {
   const classes = useStyles();
   const { pad } = props;
-
+  const heroImage = `http://localhost:5000/${pad.image}`;
   return (
     <Card className={classes.root}>
       <CardActionArea>
@@ -69,7 +69,7 @@ export default function PadCard(props) {
             component='img'
             alt='Pad Image'
             height='250'
-            image={image}
+            image={heroImage}
             title='Pad Image'
           />
           <CardContent>

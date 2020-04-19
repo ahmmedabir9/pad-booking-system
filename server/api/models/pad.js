@@ -18,22 +18,18 @@ const padSchema = mongoose.Schema({
   },
   padaddress: {
     type: String,
-    require: true,
   },
   area: {
     type: String,
-    require: true,
   },
   district: {
     type: String,
-    require: true,
   },
   image: {
     type: String,
   },
   ratings: {
     type: Object,
-    require: true,
   },
   instruments: {
     type: Object,

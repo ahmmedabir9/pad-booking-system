@@ -1,77 +1,57 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import Link from "@material-ui/core/Link";
-import heroImage from "../assets/images/PadProfile/pad.jpg";
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
 
-import LocationOnIcon from "@material-ui/icons/LocationOn";
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   mainFeaturedPost: {
-    position: "relative",
+    position: 'relative',
     backgroundColor: theme.palette.grey[800],
     color: theme.palette.common.white,
     marginBottom: theme.spacing(4),
-    backgroundImage: "url(https://source.unsplash.com/random)",
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center"
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    maxHeight: '40vh',
+    overflow: 'hidden',
   },
   overlay: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     bottom: 0,
     right: 0,
     left: 0,
-    backgroundColor: "rgba(0,0,0,.7)"
+    backgroundColor: 'rgba(0,0,0,.5)',
   },
   mainFeaturedPostContent: {
-    position: "relative",
+    position: 'relative',
     padding: theme.spacing(1),
-    [theme.breakpoints.up("md")]: {
+    [theme.breakpoints.up('md')]: {
       padding: theme.spacing(4),
-      paddingRight: 0
-    }
-  }
+      paddingRight: 0,
+    },
+  },
 }));
 
 export default function MainFeaturedPost(props) {
   const classes = useStyles();
   const { detail } = props;
 
+  const heroImage = `http://localhost:5000/${detail.image}`;
+  console.log(heroImage);
   return (
-    <Paper
-      className={classes.mainFeaturedPost}
-      style={{ backgroundImage: `url(${heroImage})` }}
-    >
+    <Paper className={classes.mainFeaturedPost}>
       {/* Increase the priority of the hero background image */}
-      {<img style={{ display: "none" }} src={heroImage} />}
-      <div className={classes.overlay} />
-      <Grid container>
-        <Grid item md={6}>
-          <div className={classes.mainFeaturedPostContent}>
-            <Typography
-              component="h1"
-              variant="h3"
-              color="inherit"
-              gutterBottom
-            >
-              {detail.padname}
-            </Typography>
-            <Typography variant="body1" color="white" paragraph>
-              <LocationOnIcon fontSize="small" /> 
-              {detail.area}
-            </Typography>
-          </div>
-        </Grid>
-      </Grid>
+      {<img style={{ maxWidth: '100%' }} src={heroImage} />}
     </Paper>
   );
 }
 
 MainFeaturedPost.propTypes = {
-  post: PropTypes.object
+  post: PropTypes.object,
 };

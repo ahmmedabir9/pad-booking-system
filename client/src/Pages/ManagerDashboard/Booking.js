@@ -103,6 +103,7 @@ function Booking(props) {
                     size='small'
                     onClick={() => {
                       handleClickOpen(booking._id);
+                      console.log(booking.bookingid);
                     }}>
                     Update
                   </Button>

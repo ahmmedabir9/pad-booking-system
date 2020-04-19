@@ -1,11 +1,35 @@
 const bcrypt = require('bcrypt');
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
 const auth = require('../../config/auth');
 const { Pad } = require('../models/pad');
 
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'upload/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${new Date().toISOString()}_${file.originalname}`);
+  },
+  fileFilter: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    if (ext !== '.jpg' || ext !== '.JPG' || ext !== '.jpeg' || ext !== '.png') {
+      return cb(
+        res.status(400).end('only jpg, jpeg and png files are allowed'),
+        false
+      );
+    }
+    cb(null, true);
+  },
+});
+
+var upload = multer({ storage: storage }).single('padimage');
+
 //insert new Pad
-router.post('/add-pad', auth, (req, res, next) => {
+router.post('/add-pad', auth, upload, (req, res, next) => {
+  console.log(req.file);
+
   Pad.findOne({ manager: req.manager._id })
     .then((pad) => {
       if (pad) {
@@ -21,6 +45,7 @@ router.post('/add-pad', auth, (req, res, next) => {
                 'The Pad Name already exists, please choose another name',
             });
           } else {
+            let imagePath = req.file.path;
             let pad = new Pad({
               padname: req.body.padname,
               slug: slug,
@@ -30,6 +55,7 @@ router.post('/add-pad', auth, (req, res, next) => {
               district: req.body.district,
               manager: req.manager._id,
               adpay: parseInt(req.body.adpay),
+              image: imagePath.substring(7),
             });
 
             pad
@@ -56,6 +82,7 @@ router.post('/add-pad', auth, (req, res, next) => {
     });
 });
 
+
 //get pad by manager id
 router.get('/', auth, (req, res) => {
   let { _id } = req.manager;
@@ -78,6 +105,8 @@ router.get('/', auth, (req, res) => {
     });
 });
 
+
+//Update Pad Info
 router.put('/:id', auth, (req, res) => {
   let { id } = req.params;
   Pad.findByIdAndUpdate(id, { $set: req.body }, { new: true })
