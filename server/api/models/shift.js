@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 const shiftSchema = mongoose.Schema({
   shiftname: {
     type: String,
-    require: true,
-    default: 'Practice Sessiion',
+    require: true
   },
   slug: {
     type: String,

@@ -33,12 +33,27 @@ export const addMyPad = (data) => (dispatch) => {
 };
 
 export const removeMyPad = (id) => (dispatch) => {
-  axios.delete(`http://localhost:5000/api/managepad/${id}`)
-  .then(response => {
-    dispatch({
-      type: Types.REMOVE_MYPAD,
-      payload: { id: response.data._id },
-    });
-  })
-  .catch()
+  axios
+    .delete(`http://localhost:5000/api/managepad/${id}`)
+    .then((response) => {
+      dispatch({
+        type: Types.REMOVE_MYPAD,
+        payload: { id: response.data._id },
+      });
+    })
+    .catch();
+};
+
+export const updateMyPad = (id, pad) => (dispatch) => {
+  axios
+    .put(`http://localhost:5000/api/managepad/${id}`, pad)
+    .then((response) => {
+      dispatch({
+        type: Types.UPDATE_MYPAD,
+        payload: {
+          mypad: response.data.pad,
+        },
+      });
+    })
+    .catch();
 };

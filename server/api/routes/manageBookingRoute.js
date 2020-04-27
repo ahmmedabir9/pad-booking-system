@@ -1,51 +1,11 @@
-const bcrypt = require('bcrypt');
 const express = require('express');
 const router = express.Router();
 const auth = require('../../config/auth');
 const { Booking } = require('../models/booking');
 
-//insert new Shift
-router.post('/add-shift', auth, (req, res) => {
-  let slug = req.body.shiftname.replace(/\s+/g, '-').toLowerCase();
-  Shift.findOne({ slug: slug }).then((shift) => {
-    if (shift) {
-      res.status(200).json({
-        message: 'The shift Name already exists, please choose another name',
-      });
-    } else {
-      let shift = new Shift({
-        shiftname: req.body.shiftname,
-        slug: slug,
-        pad: req.body.pad,
-        manager: req.manager._id,
-        shiftstart: req.body.shiftstart,
-        shiftend: req.body.shiftend,
-        rent: req.body.rent,
-      });
-
-      shift
-        .save()
-        .then((result) => {
-          res.status(201).json({
-            message: 'New Shift Created',
-            shift: result,
-          });
-        })
-        .catch((error) => {
-          res.json({
-            error,
-          });
-        });
-    }
-  });
-});
-
 //get bookings by manager id
 router.post('/', auth, (req, res) => {
   let pad = req.body.slug;
-
-  console.log(`Called from: ${pad}`);
-
   Booking.find({ pad: pad })
     .then((bookings) => {
       if (!bookings) {

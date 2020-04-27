@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import InputBase from '@material-ui/core/InputBase';
-import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 import { logout } from '../store/_actions/authActions';
 
@@ -61,19 +59,7 @@ function NavBar(props) {
           <strong className='nav-logo'> GOJAM </strong>
         </Link>
         <div className={classes.grow} />
-        <div className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon />
-          </div>
-          <InputBase
-            placeholder='Search…'
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-            inputProps={{ 'aria-label': 'search' }}
-          />
-        </div>
+
         {props.auth.isAuthenticated ? (
           <Link className='link' to={`/Login`}>
             <Button

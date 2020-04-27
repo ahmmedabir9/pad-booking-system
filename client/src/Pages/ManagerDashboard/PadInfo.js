@@ -7,27 +7,13 @@ import {
   addMyPad,
   removeMyPad,
   loadMyPad,
+  updateMyPad,
 } from '../../store/_actions/padActions';
 
-import FileUpload from './utils/FileUpload';
+import { Button } from '@material-ui/core';
 
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Avatar from '@material-ui/core/Avatar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
+import AddPad from './Components/AddPad';
+import PadInfoForm from './Components/PadInfoForm';
 
 const drawerWidth = 240;
 
@@ -80,9 +66,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(2),
   },
   paper: {
-    padding: theme.spacing(2),
     display: 'flex',
-    overflow: 'auto',
     flexDirection: 'column',
     alignItems: 'center',
   },
@@ -95,8 +79,15 @@ function PadInfo(props) {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   const [pad, setPad] = React.useState({});
-  const [Image, setImage] = useState();
+  const [Image, setImage] = useState('');
+  const [ImageToSave, setImageToSave] = useState('');
   const [open, setOpen] = React.useState(false);
+
+  useEffect(() => {
+    props.loadMyPad();
+    setPad(props.pad);
+    console.log('called');
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -115,6 +106,7 @@ function PadInfo(props) {
       adpay: e.target.adpay.value,
       district: e.target.district.value,
       padaddress: e.target.padaddress.value,
+      image: ImageToSave,
     };
 
     props.addMyPad(data);
@@ -129,29 +121,50 @@ function PadInfo(props) {
 
   const handleDelete = () => {
     props.removeMyPad(pad._id);
+  };
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    if (ImageToSave === '') {
+      setImageToSave(pad.image);
+    }
+    const data = {
+      padname: e.target.padname.value,
+      padaddress: e.target.padaddress.value,
+      padmobile: e.target.padmobile.value,
+      area: e.target.area.value,
+      adpay: e.target.adpay.value,
+      district: e.target.district.value,
+      padaddress: e.target.padaddress.value,
+      image: ImageToSave,
+    };
+
+    props.updateMyPad(props.pad._id, data);
+
+    console.log(data);
     props.loadMyPad();
     setPad(props.pad);
+    handleClose();
   };
 
-  const handleClickOpenUpdate = () => {
-    setOpen(true);
-  };
+  const fileSelectedHandler = (event) => {
+    let formData = new FormData();
+    const config = {
+      header: { 'content-type': 'multipart/form-data' },
+    };
+    formData.append('padimage', event.target.files[0]);
 
-  const handleCloseUpdate = () => {
-    setOpen(false);
-  };
+    console.log(formData);
 
-  const handleUpdate = () => {
-    handleClickOpenUpdate();
-  };
+    axios.post('/api/managepad/upload', formData, config).then((response) => {
+      if (response.data.success) {
+        console.log(response.data.image);
 
-  useEffect(() => {
-    props.loadMyPad();
-    setPad(props.pad);
-  }, []);
-
-  const updateImages = (newImage) => {
-    setImage(newImage);
+        setImageToSave(response.data.image);
+      } else {
+        alert('Failed to save the Image in Server');
+      }
+    });
   };
 
   return (
@@ -162,204 +175,38 @@ function PadInfo(props) {
           <Button variant='outlined' color='primary' onClick={handleClickOpen}>
             Create Your Pad
           </Button>
-
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby='form-dialog-title'>
-            <form onSubmit={handleSubmit} className={classes.form} noValidate>
-              <DialogTitle id='form-dialog-title'>Subscribe</DialogTitle>
-              <DialogContent>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <TextField
-                      variant='outlined'
-                      required
-                      fullWidth
-                      id='padname'
-                      label='Pad Name'
-                      name='padname'
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      variant='outlined'
-                      required
-                      fullWidth
-                      id='padmobile'
-                      label='Contact Number'
-                      name='padmobile'
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      variant='outlined'
-                      required
-                      fullWidth
-                      id='padaddress'
-                      label='Full Address'
-                      name='padaddress'
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      variant='outlined'
-                      required
-                      fullWidth
-                      id='area'
-                      label='Area'
-                      name='area'
-                      placeholder='ex: Uttara'
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      variant='outlined'
-                      required
-                      fullWidth
-                      id='district'
-                      label='District'
-                      name='district'
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      variant='outlined'
-                      required
-                      fullWidth
-                      id='adpay'
-                      label='Advance Payable'
-                      name='adpay'
-                      placeholder='write %'
-                    />
-                  </Grid>
-                </Grid>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClose} color='primary'>
-                  Cancel
-                </Button>
-                <Button type='submit' color='primary'>
-                  Save
-                </Button>
-              </DialogActions>
-            </form>
-          </Dialog>
         </div>
       ) : (
         <div className={classes.paper}>
           <h1>{pad.padname}</h1>
+          <PadInfoForm
+            open={open}
+            handleClose={handleClose}
+            handleUpdate={handleUpdate}
+            pad={pad}
+            fileSelectedHandler={fileSelectedHandler}
+          />
           <Button variant='outlined' color='primary' onClick={handleDelete}>
             Delete Your Pad
-          </Button>
-          <Button variant='outlined' color='primary' onClick={handleUpdate}>
-            Update Pad Details
           </Button>
         </div>
       )}
 
-      <Dialog
+      <AddPad
         open={open}
-        onClose={handleCloseUpdate}
-        aria-labelledby='form-dialog-title'>
-        <form onSubmit={handleSubmit} className={classes.form} noValidate>
-          <DialogTitle id='form-dialog-title'>Subscribe</DialogTitle>
-          <DialogContent>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  variant='outlined'
-                  required
-                  fullWidth
-                  id='padname'
-                  label='Pad Name'
-                  name='padname'
-                  placeholder={pad.padname}
-                  value={pad.padname}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant='outlined'
-                  required
-                  fullWidth
-                  id='padmobile'
-                  label='Contact Number'
-                  name='padmobile'
-                  placeholder={pad.padmobile}
-                  value={pad.padmobile}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant='outlined'
-                  required
-                  fullWidth
-                  id='padaddress'
-                  label='Full Address'
-                  name='padaddress'
-                  placeholder={pad.padaddress}
-                  value={pad.padaddress}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant='outlined'
-                  required
-                  fullWidth
-                  id='area'
-                  label='Area'
-                  name='area'
-                  placeholder='ex: Uttara'
-                  placeholder={pad.area}
-                  value={pad.area}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant='outlined'
-                  required
-                  fullWidth
-                  id='district'
-                  label='District'
-                  name='district'
-                  placeholder={pad.district}
-                  value={pad.district}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant='outlined'
-                  required
-                  fullWidth
-                  id='adpay'
-                  label='Advance Payable'
-                  name='adpay'
-                  placeholder='write %'
-                  placeholder={pad.adpay}
-                  value={pad.adpay}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FileUpload
-                  refreshFunction={updateImages}
-                  setImage={setImage()}
-                />
-              </Grid>
-            </Grid>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color='primary'>
-              Cancel
-            </Button>
-            <Button type='submit' color='primary'>
-              Save
-            </Button>
-          </DialogActions>
-        </form>
-      </Dialog>
+        handleClose={handleClose}
+        handleSubmit={handleSubmit}
+        pad={pad}
+        fileSelectedHandler={fileSelectedHandler}
+      />
     </div>
   );
 }
 
-export default connect(null, { addMyPad, removeMyPad, loadMyPad })(PadInfo);
+const mapStateToProps = (state) => ({
+  pad: state.mypad,
+});
+
+export default connect(null, { addMyPad, removeMyPad, loadMyPad, updateMyPad })(
+  PadInfo
+);

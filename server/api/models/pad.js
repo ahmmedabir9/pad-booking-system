@@ -9,6 +9,9 @@ const padSchema = mongoose.Schema({
     type: String,
     require: true,
   },
+  desc: {
+    type: String,
+  },
   manager: {
     type: String,
   },
@@ -28,9 +31,6 @@ const padSchema = mongoose.Schema({
   image: {
     type: String,
   },
-  ratings: {
-    type: Object,
-  },
   instruments: {
     type: Object,
   },
@@ -38,8 +38,9 @@ const padSchema = mongoose.Schema({
     type: Number,
     default: 0,
   },
-  expay: {
-    type: Array,
+  booked: {
+    type: Number,
+    default: 0,
   },
 });
 

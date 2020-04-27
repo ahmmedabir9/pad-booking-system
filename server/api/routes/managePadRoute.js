@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
@@ -27,9 +26,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage }).single('padimage');
 
 //insert new Pad
-router.post('/add-pad', auth, upload, (req, res, next) => {
-  console.log(req.file);
-
+router.post('/add-pad', auth, (req, res, next) => {
   Pad.findOne({ manager: req.manager._id })
     .then((pad) => {
       if (pad) {
@@ -45,7 +42,6 @@ router.post('/add-pad', auth, upload, (req, res, next) => {
                 'The Pad Name already exists, please choose another name',
             });
           } else {
-            let imagePath = req.file.path;
             let pad = new Pad({
               padname: req.body.padname,
               slug: slug,
@@ -55,7 +51,8 @@ router.post('/add-pad', auth, upload, (req, res, next) => {
               district: req.body.district,
               manager: req.manager._id,
               adpay: parseInt(req.body.adpay),
-              image: imagePath.substring(7),
+              image: req.body.image,
+              booked: 0,
             });
 
             pad
@@ -82,6 +79,18 @@ router.post('/add-pad', auth, upload, (req, res, next) => {
     });
 });
 
+//upload pad Image
+router.post('/upload', upload, (req, res) => {
+  upload(req, res, (err) => {
+    if (err) {
+      return res.json({ success: false, err });
+    }
+    return res.json({
+      success: true,
+      image: res.req.file.filename,
+    });
+  });
+});
 
 //get pad by manager id
 router.get('/', auth, (req, res) => {
@@ -105,7 +114,6 @@ router.get('/', auth, (req, res) => {
     });
 });
 
-
 //Update Pad Info
 router.put('/:id', auth, (req, res) => {
   let { id } = req.params;
@@ -113,7 +121,7 @@ router.put('/:id', auth, (req, res) => {
     .then((pad) => {
       res.status(200).json({
         message: 'Updated Successfully',
-        ...pad._doc,
+        pad: pad,
       });
     })
     .catch((error) => {

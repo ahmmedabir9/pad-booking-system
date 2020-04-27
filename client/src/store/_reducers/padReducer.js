@@ -11,6 +11,9 @@ const padReducer = (state = {}, action) => {
     case Types.REMOVE_MYPAD: {
       return null;
     }
+    case Types.UPDATE_MYPAD: {
+      return action.payload.mypad;
+    }
     default:
       return state;
   }

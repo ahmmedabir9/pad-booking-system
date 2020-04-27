@@ -37,7 +37,7 @@ class App extends Component {
             <Suspense fallback={<div className='loader'> </div>}>
               <Switch>
                 <Route path='/' exact render={() => <HomePage />} />
-                <Route path='/Pad/:id' component={PadDetailsPage} />
+                <Route path='/:id' component={PadDetailsPage} />
                 <Route path='/Booking/:id' component={BookingPage} />
               </Switch>
             </Suspense>

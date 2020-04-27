@@ -23,6 +23,16 @@ router.post('/add-booking', (req, res, next) => {
           '-',
           ''
         )}${req.body.date.replace('/', '-')}`;
+
+        //TODO: Booking update
+        // Pad.findOneAndUpdate({
+        //   slug: pad,
+        // }).then((pad) => {
+        //   if (pad) {
+
+        //   }
+        // });
+
         let booking = new Booking({
           bandname: req.body.bandname,
           bandmobile: req.body.bandmobile,

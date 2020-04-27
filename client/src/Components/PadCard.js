@@ -82,27 +82,16 @@ export default function PadCard(props) {
             </Typography>
             <Typography variant='body2' color='textSecondary' component='p'>
               <LocationOnIcon fontSize='small' />
-              {pad.area}
+              {pad.padaddress}
             </Typography>
-            <Box
-              component='fieldset'
-              mb={3}
-              borderColor='transparent'
-              className='card-rating'>
-              <Rating
-                name='customized-empty'
-                defaultValue={2}
-                precision={0.5}
-                emptyIcon={<StarBorderIcon fontSize='inherit' />}
-                readOnly
-                size='small'
-              />
-            </Box>
+            <Typography variant='body2' color='textDanger' component='p'>
+              {pad.area}, {pad.district}
+            </Typography>
           </CardContent>
         </Link>
       </CardActionArea>
       <CardActions>
-        <Link className='link' to={`/Pad/${pad.slug}`}>
+        <Link className='link' to={`/${pad.slug}`}>
           <Button
             variant='contained'
             color='primary'
