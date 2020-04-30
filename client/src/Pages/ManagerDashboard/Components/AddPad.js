@@ -78,14 +78,15 @@ function AddPad(props) {
   const classes = useStyles();
   let { open, handleClose, pad, handleSubmit, fileSelectedHandler } = props;
   let padImage;
-  if (pad.image) {
+  if (pad?.image) {
     padImage = `http://localhost:5000/${pad.image}`;
   }
   return (
     <Dialog
       open={open}
       onClose={handleClose}
-      aria-labelledby='form-dialog-title'>
+      aria-labelledby='form-dialog-title'
+    >
       <form onSubmit={handleSubmit} className={classes.form} noValidate>
         <DialogTitle id='form-dialog-title'>Subscribe</DialogTitle>
         <DialogContent>

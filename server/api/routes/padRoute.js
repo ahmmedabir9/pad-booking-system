@@ -11,7 +11,13 @@ router.post('/', (req, res, next) => {
   let key = req.body.key;
 
   if (key) {
-    Pad.find({ padname: key })
+    Pad.find({
+      $or: [
+        { padname: { $regex: key, $options: 'i' } },
+        { area: { $regex: key, $options: 'i' } },
+        { district: { $regex: key, $options: 'i' } },
+      ],
+    })
       .sort({ _id: -1 })
       .limit(limit)
       .then((pads) => {

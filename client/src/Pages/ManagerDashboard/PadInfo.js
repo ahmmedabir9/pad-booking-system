@@ -83,11 +83,14 @@ function PadInfo(props) {
   const [ImageToSave, setImageToSave] = useState('');
   const [open, setOpen] = React.useState(false);
 
+  // useEffect(() => {
+  //   props.loadMyPad();
+  // }, []);
+
   useEffect(() => {
     props.loadMyPad();
     setPad(props.pad);
-    console.log('called');
-  }, []);
+  }, [props.pad]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -112,8 +115,8 @@ function PadInfo(props) {
     props.addMyPad(data);
 
     console.log(data);
-    props.loadMyPad();
-    setPad(props.pad);
+    // props.loadMyPad();
+    // setPad(props.pad);
     handleClose();
 
     e.preventDefault();
@@ -169,7 +172,7 @@ function PadInfo(props) {
 
   return (
     <div>
-      {!pad._id ? (
+      {!pad?._id ? (
         <div className={classes.paper}>
           <h1>You dont have any pad</h1>
           <Button variant='outlined' color='primary' onClick={handleClickOpen}>

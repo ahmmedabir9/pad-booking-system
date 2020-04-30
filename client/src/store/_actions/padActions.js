@@ -26,7 +26,7 @@ export const addMyPad = (data) => (dispatch) => {
       console.log(response);
       dispatch({
         type: Types.ADD_MYPAD,
-        payload: { mypad: response.data },
+        payload: { mypad: response.data.pad },
       });
     })
     .catch();

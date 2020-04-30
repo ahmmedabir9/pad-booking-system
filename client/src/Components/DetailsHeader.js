@@ -42,16 +42,13 @@ export default function MainFeaturedPost(props) {
   const classes = useStyles();
   const { detail } = props;
 
+  console.log(detail);
+
   const heroImage = `http://localhost:5000/${detail.image}`;
   console.log(heroImage);
   return (
     <Paper className={classes.mainFeaturedPost}>
-      {/* Increase the priority of the hero background image */}
       {<img style={{ maxWidth: '100%' }} src={heroImage} />}
     </Paper>
   );
 }
-
-MainFeaturedPost.propTypes = {
-  post: PropTypes.object,
-};

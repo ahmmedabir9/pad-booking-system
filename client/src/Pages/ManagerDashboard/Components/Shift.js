@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -9,7 +8,20 @@ import TableRow from '@material-ui/core/TableRow';
 import Title from './Title';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
-
+import {
+  createMuiTheme,
+  withStyles,
+  makeStyles,
+  ThemeProvider,
+} from '@material-ui/core/styles';
+import {
+  green,
+  red,
+  deepOrange,
+  indigo,
+  amber,
+  grey,
+} from '@material-ui/core/colors';
 import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -20,12 +32,11 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
 
-import Dialog from '@material-ui/core/Dialog';
+import { Dialog, Icon, IconButton } from '@material-ui/core';
+
+import DeleteIcon from '@material-ui/icons/Delete';
+
 import {
   loadMyShift,
   removeMyShift,
@@ -42,13 +53,39 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const ColorButton = withStyles((theme) => ({
+  root: {
+    color: theme.palette.getContrastText(amber[500]),
+    backgroundColor: amber[500],
+    '&:hover': {
+      backgroundColor: amber[700],
+    },
+  },
+}))(Button);
+
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: grey[300],
+    color: theme.palette.common.black,
+    fontWeight: 600,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
+
 function Shift(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [shifts, setShifts] = React.useState([])
+  const [shifts, setShifts] = React.useState([]);
   const handleClickOpen = () => {
     setOpen(true);
   };
+
+  useEffect(() => {
+    props.loadMyShift();
+    setShifts(props.padShift);
+  }, [props.padShift]);
 
   const handleClose = () => {
     setOpen(false);
@@ -65,67 +102,56 @@ function Shift(props) {
     };
 
     props.addMyShift(data);
-
-    console.log(data);
-
+    props.loadMyShift();
     handleClose();
   };
-
-  useEffect(() => {
-    props.loadMyShift();
-  }, []);
 
   return (
     <React.Fragment>
       <Title>Shift</Title>
-      <Table size='small'>
+      <Table size='small' gutterBottom>
         <TableHead>
           <TableRow>
-            <TableCell>Shift</TableCell>
-            <TableCell>Start</TableCell>
-            <TableCell>End</TableCell>
-            <TableCell>Rent</TableCell>
-            <TableCell>Edit</TableCell>
-            <TableCell>Remove</TableCell>
+            <StyledTableCell>Shift</StyledTableCell>
+            <StyledTableCell>Start</StyledTableCell>
+            <StyledTableCell>End</StyledTableCell>
+            <StyledTableCell>Rent</StyledTableCell>
+            <StyledTableCell>Action</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.padShift.map((shift) => (
+          {shifts.map((shift) => (
             <TableRow key={shift}>
               <TableCell>{shift.shiftname}</TableCell>
               <TableCell>{shift.shiftstart}</TableCell>
               <TableCell>{shift.shiftend}</TableCell>
               <TableCell>{shift.rent}</TableCell>
               <TableCell>
-                <Button variant='outlined' size='small' color='primary'>
-                  Edit
-                </Button>
-              </TableCell>
-              <TableCell>
-                <Button
-                  variant='outlined'
-                  color='primary'
-                  size='small'
-                  onClick={() => props.removeMyShift(shift._id)}>
-                  Delete
-                </Button>
+                <IconButton
+                  aria-label='delete'
+                  onClick={() => props.removeMyShift(shift._id)}
+                >
+                  <DeleteIcon style={{ color: red[800] }} />
+                </IconButton>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
-        <Button
-          variant='outlined'
-          color='primary'
-          size='small'
-          onClick={handleClickOpen}>
-          Add new Shift
-        </Button>
       </Table>
+      <ColorButton
+        className={classes.margin}
+        variant='contained'
+        color='secondary'
+        onClick={handleClickOpen}
+      >
+        Add new Shift
+      </ColorButton>
 
       <Dialog
         open={open}
         onClose={handleClose}
-        aria-labelledby='form-dialog-title'>
+        aria-labelledby='form-dialog-title'
+      >
         <form onSubmit={handleSubmit} className={classes.form} noValidate>
           <DialogTitle id='form-dialog-title'>Subscribe</DialogTitle>
           <DialogContent>

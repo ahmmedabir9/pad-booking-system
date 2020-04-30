@@ -35,6 +35,7 @@ export default function PadDetails({ match }) {
       .then((res) => {
         console.log(res.data);
         setDetail(res.data);
+        console.log(res.data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -52,12 +53,13 @@ export default function PadDetails({ match }) {
           <Description title='Pad Description' pad={detail} />
           <Shift slug={slug} />
         </Grid>
-        <Link className='link' to={`/Booking/${detail.slug}`}>
+        <Link className='link' to={`/Booking/${slug}`}>
           <Button
             variant='contained'
             color='secondary'
             size='small'
-            disableElevation>
+            disableElevation
+          >
             Book Now
           </Button>
         </Link>

@@ -22,7 +22,6 @@ mongoose
   });
 
 var db = mongoose.connection;
-//FIXME: Uploads will be
 app.use(express.static('upload'));
 
 app.use(bodyParser.urlencoded({ extended: true }));

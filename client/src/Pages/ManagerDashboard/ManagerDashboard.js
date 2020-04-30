@@ -6,7 +6,6 @@ import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Container from '@material-ui/core/Container';
 import Dashboard from './Dashboard';
-import Shift from './Shift';
 import Booking from './Booking';
 import PadInfo from './PadInfo';
 import Manager from './Manager';
@@ -95,8 +94,7 @@ function ManagerDashboard(props) {
   }, []);
 
   const manager = props.auth.user;
-  const { mypad } = props;
-  const padShift = props.myshift;
+  const { mypad, myshift } = props;
 
   const booking = [
     {
@@ -128,14 +126,6 @@ function ManagerDashboard(props) {
                   <DashboardIcon />
                 </ListItemIcon>
                 <ListItemText className='dashText' primary='Dashboard' />
-              </ListItem>
-            </Link>
-            <Link className='link' to={`/ManagerDashboard/Shift`}>
-              <ListItem button>
-                <ListItemIcon>
-                  <ShoppingCartIcon />
-                </ListItemIcon>
-                <ListItemText className='dashText' primary='Shift' />
               </ListItem>
             </Link>
             <Link className='link' to={`/ManagerDashboard/Booking`}>
@@ -176,13 +166,9 @@ function ManagerDashboard(props) {
                   manager={manager}
                   pad={mypad}
                   booking={booking}
-                  padShift={padShift}
+                  padShift={myshift}
                 />
               )}
-            />
-            <Route
-              path='/ManagerDashboard/Shift'
-              render={() => <Shift pad={mypad} padShift={padShift} />}
             />
             <Route
               path='/ManagerDashboard/Booking'

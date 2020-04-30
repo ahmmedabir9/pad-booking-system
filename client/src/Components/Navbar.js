@@ -7,6 +7,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import { logout } from '../store/_actions/authActions';
 
+import logo from '../assets/images/Icons/GoJam-Logo.png';
+
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -37,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
   inputRoot: {
     color: 'black',
   },
+  logo: {
+    width: '60px',
+  },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
@@ -56,7 +61,10 @@ function NavBar(props) {
     <AppBar position='fixed' className='appBar'>
       <Toolbar>
         <Link className='nav-link' to='/'>
-          <strong className='nav-logo'> GOJAM </strong>
+          <strong className='nav-logo'>
+            
+            <img className={classes.logo} src={logo} />
+          </strong>
         </Link>
         <div className={classes.grow} />
 
@@ -69,7 +77,8 @@ function NavBar(props) {
               onClick={() => {
                 props.logout(props.history);
               }}
-              disableElevation>
+              disableElevation
+            >
               Logout
             </Button>
           </Link>
@@ -79,7 +88,8 @@ function NavBar(props) {
               variant='contained'
               color='secondary'
               size='small'
-              disableElevation>
+              disableElevation
+            >
               Login
             </Button>
           </Link>

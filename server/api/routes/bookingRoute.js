@@ -69,9 +69,16 @@ router.post('/add-booking', (req, res, next) => {
 
 //get booking by bookingid
 router.post('/', (req, res) => {
-  Booking.findOne({ bookingid: req.body })
+  let { bookingid } = req.body;
+  Booking.findOne({ bookingid: bookingid })
     .then((booking) => {
-      res.status(200).json(booking);
+      if (booking) {
+        res.status(200).json(booking);
+      } else {
+        res.status(400).json({
+          message: 'Invalid Booking ID',
+        });
+      }
     })
     .catch((err) => {
       console.log(err);

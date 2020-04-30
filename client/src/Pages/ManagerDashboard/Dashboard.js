@@ -107,12 +107,12 @@ function Dashboard(props) {
               <UserCard manager={props.manager} pad={props.pad} />
             </Paper>
           </Grid>
-          <Grid item xs={12} md={6} lg={6}>
+          <Grid item xs={12} md={5} lg={5}>
             <Paper className={classes.paper}>
               <Shift pad={props.pad} padShift={props.padShift} />
             </Paper>
           </Grid>
-          <Grid item xs={12} md={6} lg={6}>
+          <Grid item xs={12} md={7} lg={7}>
             <Paper className={classes.paper}>
               <Booking booking={props.booking} />
             </Paper>
