@@ -18,7 +18,7 @@ const bookingSchema = mongoose.Schema({
     require: true,
   },
   shift: {
-    type: String,
+    type: Object,
     require: true,
   },
   date: {
@@ -29,7 +29,7 @@ const bookingSchema = mongoose.Schema({
     type: String,
     require: true,
   },
-  payment: {
+  paid: {
     type: Number,
     require: true,
   },

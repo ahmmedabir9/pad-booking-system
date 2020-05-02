@@ -22,17 +22,17 @@ export const loadMyBooking = (pad) => (dispatch) => {
     });
 };
 
-// export const removeMyShift = (id) => (dispatch) => {
-//   axios
-//     .delete(`http://localhost:5000/api/manageshift/${id}`)
-//     .then((response) => {
-//       dispatch({
-//         type: Types.REMOVE_MYSHIFT,
-//         payload: { id: response.data._id },
-//       });
-//     })
-//     .catch();
-// };
+export const removeMyBooking = (id) => (dispatch) => {
+  axios
+    .delete(`http://localhost:5000/api/managebooking/${id}`)
+    .then((response) => {
+      dispatch({
+        type: Types.REMOVE_MYBOOKING,
+        payload: { id: response.data._id },
+      });
+    })
+    .catch();
+};
 
 export const updateMyBooking = (id, booking) => (dispatch) => {
   axios

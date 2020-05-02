@@ -25,9 +25,21 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
-import Dialog from '@material-ui/core/Dialog';
-import { loadMyBooking } from '../../store/_actions/bookingAction';
+import { Dialog, Icon, IconButton } from '@material-ui/core';
+import {
+  loadMyBooking,
+  removeMyBooking,
+} from '../../store/_actions/bookingAction';
+import {
+  green,
+  red,
+  deepOrange,
+  indigo,
+  amber,
+  grey,
+} from '@material-ui/core/colors';
 import { loadMyPad } from '../../store/_actions/padActions';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
@@ -85,6 +97,7 @@ function Booking(props) {
               <TableCell>Shift</TableCell>
               <TableCell>Amount</TableCell>
               <TableCell>Status</TableCell>
+              <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -93,7 +106,7 @@ function Booking(props) {
                 <TableCell>{booking.bookingid}</TableCell>
                 <TableCell>{booking.bandname}</TableCell>
                 <TableCell>{booking.bandmobile}</TableCell>
-                <TableCell>{booking.shift}</TableCell>
+                <TableCell>{booking.shift.slug}</TableCell>
                 <TableCell>{booking.amount}</TableCell>
                 <TableCell>{booking.status}</TableCell>
                 <TableCell>
@@ -104,17 +117,20 @@ function Booking(props) {
                     onClick={() => {
                       handleClickOpen(booking._id);
                       console.log(booking.bookingid);
-                    }}>
+                    }}
+                  >
                     Update
                   </Button>
                   <Dialog
                     open={open}
                     onClose={handleClose}
-                    aria-labelledby='form-dialog-title'>
+                    aria-labelledby='form-dialog-title'
+                  >
                     <form
                       onSubmit={handleSubmit}
                       className={classes.form}
-                      noValidate>
+                      noValidate
+                    >
                       <DialogTitle id='form-dialog-title'>
                         {booking.bookingid}
                       </DialogTitle>
@@ -146,6 +162,14 @@ function Booking(props) {
                     </form>
                   </Dialog>
                 </TableCell>
+                <TableCell>
+                  <IconButton
+                    aria-label='delete'
+                    onClick={() => props.removeMyBooking(booking._id)}
+                  >
+                    <DeleteIcon style={{ color: red[800] }} />
+                  </IconButton>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -153,7 +177,8 @@ function Booking(props) {
             variant='outlined'
             color='primary'
             size='small'
-            onClick={handleClickOpen}>
+            onClick={handleClickOpen}
+          >
             Add new Shift
           </Button>
         </Table>
@@ -170,4 +195,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   loadMyBooking,
+  removeMyBooking,
 })(Booking);

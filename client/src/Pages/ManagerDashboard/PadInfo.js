@@ -103,6 +103,7 @@ function PadInfo(props) {
   const handleSubmit = (e) => {
     const data = {
       padname: e.target.padname.value,
+      desc: e.target.desc.value,
       padaddress: e.target.padaddress.value,
       padmobile: e.target.padmobile.value,
       area: e.target.area.value,

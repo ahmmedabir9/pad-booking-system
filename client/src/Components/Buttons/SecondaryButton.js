@@ -1,13 +1,13 @@
 import { withStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-import { blue, cyan } from '@material-ui/core/colors';
+import { grey } from '@material-ui/core/colors';
 
 const PrimaryButton = withStyles((theme) => ({
   root: {
-    color: theme.palette.getContrastText(cyan[700]),
-    backgroundColor: cyan[700],
+    color: theme.palette.getContrastText(grey[500]),
+    backgroundColor: grey[500],
     '&:hover': {
-      backgroundColor: cyan[900],
+      backgroundColor: grey[700],
     },
   },
 }))(Button);

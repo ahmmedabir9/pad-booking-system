@@ -1,50 +1,36 @@
 import React from 'react';
-import { BrowserRouter as Link } from 'react-router-dom';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
 import PrimaryButton from './Buttons/PrimaryButton';
 import SecondaryButton from './Buttons/SecondaryButton';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Card,
   CardMedia,
   CardContent,
   CardActions,
   Typography,
-  Button,
   CardActionArea,
 } from '@material-ui/core';
-import { red, blueGrey } from '@material-ui/core/colors';
 
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 
-const ColorButton = withStyles((theme) => ({
-  root: {
-    color: theme.palette.getContrastText(blueGrey[500]),
-    backgroundColor: blueGrey[500],
-    '&:hover': {
-      backgroundColor: blueGrey[700],
-    },
-  },
-}))(Button);
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     maxWidth: 320,
     minWidth: 320,
     borderRadius: 2,
   },
-  media: {
-    height: 'auto',
-    paddingTop: '56.25%', // 16:9
+  area: {
+    paddingLeft: 5,
+    fontWeight: 600,
   },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
+  cardTitle: {
+    minHeight: '35px',
+    wordWrap: 'break-word',
+    margin: 0,
   },
-  expandOpen: {
-    transform: 'rotate(180deg)',
+  content: {
+    padding: 12,
   },
 }));
 
@@ -59,24 +45,27 @@ export default function PadCard(props) {
           <CardMedia
             component='img'
             alt='Pad Image'
-            height='250'
+            height='220'
             image={heroImage}
             title='Pad Image'
           />
-          <CardContent>
+          <CardContent className={classes.content}>
             <Typography
-              gutterBottom
               variant='h6'
               component='h4'
-              className='card-title'
+              className={classes.cardTitle}
             >
               {pad.padname}
             </Typography>
-            <Typography variant='body2' color='textSecondary' component='p'>
+            <Typography variant='body2' color='textSecondary'>
               <LocationOnIcon fontSize='small' />
               {pad.padaddress}
             </Typography>
-            <Typography variant='body2' color='textDanger' component='p'>
+            <Typography
+              className={classes.area}
+              variant='body2'
+              color='textSecondary'
+            >
               {pad.area}, {pad.district}
             </Typography>
           </CardContent>
@@ -84,17 +73,12 @@ export default function PadCard(props) {
       </CardActionArea>
       <CardActions>
         <Link className='link' to={`/pad/${pad.slug}`}>
-          <PrimaryButton
-            variant='contained'
-            color='primary'
-            size='small'
-            disableElevation
-          >
+          <PrimaryButton variant='contained' size='small' disableElevation>
             View Details
           </PrimaryButton>
         </Link>
         <Link className='link' to={`/Booking/${pad.slug}`}>
-          <SecondaryButton variant='contained' disableElevation>
+          <SecondaryButton variant='contained' size='small' disableElevation>
             Book Now
           </SecondaryButton>
         </Link>

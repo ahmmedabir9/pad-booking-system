@@ -10,6 +10,7 @@ import {
   Dialog,
   TextField,
   Button,
+  TextareaAutosize,
 } from '@material-ui/core';
 
 const drawerWidth = 240;
@@ -102,6 +103,18 @@ function AddPad(props) {
                   name='padname'
                   placeholder={pad.padname}
                   value={pad.padname}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <textarea
+                  variant='outlined'
+                  required
+                  fullWidth
+                  id='desc'
+                  label='Description'
+                  name='desc'
+                  placeholder={pad.desc}
+                  value={pad.desc}
                 />
               </Grid>
               <Grid item xs={12}>

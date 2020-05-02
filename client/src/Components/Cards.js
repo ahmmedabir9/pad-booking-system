@@ -1,14 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
+
 import PadCard from './PadCard';
+import CardLoading from './Loading/CardLoading';
 import axios from 'axios';
-
-import { fade, makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import { InputBase, Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { grey } from '@material-ui/core/colors';
+import {
+  InputBase,
+  Typography,
+  IconButton,
+  Paper,
+  Grid,
+  Box,
+} from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-import Grid from '@material-ui/core/Grid';
-
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -16,52 +22,55 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     paddingBottom: '10px',
   },
-  control: {
-    padding: theme.spacing(2),
-  },
-  grow: {
-    flexGrow: 1,
-  },
-  search: {
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.black, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.black, 0.25),
-    },
+  searchRoot: {
+    padding: '2px 2px',
     display: 'flex',
+    justifyContent: 'center',
+    maxWidth: 400,
   },
-  inputRoot: {
-    color: 'black',
+  input: {
+    marginLeft: theme.spacing(1),
+    flex: 1,
   },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 1),
-    width: '100%',
+  iconButton: {
+    padding: 10,
+  },
+  notFound: {
+    height: '63vh',
+    justifyContent: 'center',
+    textAlign: 'center',
+    verticalAlign: 'middle',
+  },
+  errorIcon: {
+    fontSize: '30vh',
+    color: grey[500],
+    textAlign: 'center',
   },
 }));
 
 export default function Cards() {
-  const [spacing, setSpacing] = React.useState(2);
   const classes = useStyles();
-
-  const [cards, setCards] = React.useState([]);
-  const [searchData, setSearchData] = React.useState({});
+  const [cards, setCards] = useState([]);
+  const [searchData, setSearchData] = useState({});
+  const [loading, setLoading] = useState(true);
 
   const searchHandler = (e) => {
     e.preventDefault();
     axios
       .post('http://localhost:5000/api/pads', searchData)
       .then((res) => {
-        console.log(res.data);
+        setLoading(false);
         setCards(res.data);
       })
       .catch((err) => console.log(err));
   };
 
   useEffect(() => {
+    setSearchData({});
     axios
       .post('http://localhost:5000/api/pads')
       .then((res) => {
-        console.log(res.data);
+        setLoading(false);
         setCards(res.data);
       })
       .catch((err) => console.log(err));
@@ -69,42 +78,64 @@ export default function Cards() {
 
   return (
     <div container className={classes.root} spacing={2}>
-      <Grid
-        container
-        justify='center'
-        spacing={spacing}
-        className={classes.paper}>
-        <Grid item xs={12} md={3}>
-          <form onSubmit={searchHandler}>
-            <div className={classes.search}>
-              <InputBase
-                placeholder='Search…'
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                onChange={(e) => {
-                  setSearchData({ key: e.target.value });
-                }}
-                inputProps={{ 'aria-label': 'search' }}
-              />
-              <Button type='submit' size='small'>
-                Search
-              </Button>
-            </div>
-          </form>
+      <Grid container justify='center' spacing='1' className={classes.paper}>
+        <Grid item>
+          <Paper
+            component='form'
+            onSubmit={searchHandler}
+            className={classes.searchRoot}
+          >
+            <InputBase
+              className={classes.input}
+              placeholder='Search by Pad, Area, District'
+              inputProps={{ 'aria-label': 'Search by Pad, Area, District' }}
+              onChange={(e) => {
+                setSearchData({ key: e.target.value });
+              }}
+            />
+            <IconButton
+              type='submit'
+              className={classes.iconButton}
+              aria-label='search'
+            >
+              <SearchIcon />
+            </IconButton>
+          </Paper>
         </Grid>
       </Grid>
 
       <Grid container>
         <Grid item xs={12}>
-          <Grid container justify='center' spacing={spacing}>
-            {cards.map((pad) => (
-              <Grid key={pad} item>
-                <PadCard key={pad._id} pad={pad} />
+          {loading ? (
+            <Grid container justify='center' spacing={2}>
+              <Grid item>
+                <CardLoading />
               </Grid>
-            ))}
-          </Grid>
+              <Grid item>
+                <CardLoading />
+              </Grid>
+              <Grid item>
+                <CardLoading />
+              </Grid>
+            </Grid>
+          ) : (
+            <Grid container justify='center' spacing={2}>
+              {!cards[0] ? (
+                <div className={classes.notFound}>
+                  <ErrorOutlineIcon className={classes.errorIcon} />
+                  <Typography variant='h3' component='h4' color='textSecondary'>
+                    No Pad Found
+                  </Typography>
+                </div>
+              ) : (
+                cards.map((pad) => (
+                  <Grid key={pad} item>
+                    <PadCard key={pad._id} pad={pad} />
+                  </Grid>
+                ))
+              )}
+            </Grid>
+          )}
         </Grid>
       </Grid>
     </div>

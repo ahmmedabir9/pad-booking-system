@@ -29,7 +29,7 @@ router.put('/:bookingid', auth, (req, res) => {
   let { bookingid } = req.params;
   Booking.findOneAndUpdate(
     { _id: bookingid },
-    { $set: req.body },
+    { $set: { status: req.body.status } },
     { new: true }
   )
     .then((result) => {
@@ -45,7 +45,7 @@ router.put('/:bookingid', auth, (req, res) => {
 
 router.delete('/:id', auth, (req, res) => {
   let { id } = req.params;
-  Shift.findByIdAndDelete(id)
+  Booking.findByIdAndDelete(id)
     .then((result) => {
       res.status(200).json({
         message: 'Deleted Successfully',

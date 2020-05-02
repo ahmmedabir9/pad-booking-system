@@ -18,7 +18,7 @@ router.post('/', (req, res, next) => {
         { district: { $regex: key, $options: 'i' } },
       ],
     })
-      .sort({ _id: -1 })
+      .sort({ booked: -1 })
       .limit(limit)
       .then((pads) => {
         res.status(200).json(pads);
@@ -32,7 +32,7 @@ router.post('/', (req, res, next) => {
       });
   } else if (!key || key === '') {
     Pad.find()
-      .sort({ _id: -1 })
+      .sort({ booked: -1 })
       .limit(limit)
       .then((pads) => {
         res.status(200).json(pads);

@@ -1,184 +1,176 @@
 body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }
 
 .main {
-    margin-top: 80px;
-    margin-bottom: 30px;
+  margin-top: 80px;
+  margin-bottom: 30px;
 }
 
 .MuiButton-root {
-    border-radius: 2px !important;
+  border-radius: 2px !important;
 }
 
 .appBar {
-    color: rgb(12, 12, 12) !important;
-    background-color: #ffffff !important;
-    align-content: center;
+  color: rgb(12, 12, 12) !important;
+  background-color: #ffffff !important;
+  align-content: center;
 }
 
 .nav-link {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .link {
-    color: inherit;
-    text-decoration: inherit;
+  text-decoration: none;
 }
 
 .link:hover {
-    color: inherit;
-    text-decoration: inherit;
+  text-decoration: none;
 }
 
 .makeStyles-search-1 {
-    border-radius: 2px !important;
+  border-radius: 2px !important;
 }
 
 .nav-logo {
-    font-size: large;
-    color: firebrick;
+  font-size: large;
+  color: firebrick;
 }
 
 .MuiToolbar-regular {
-    min-height: 55px !important;
+  min-height: 55px !important;
 }
 
 .lds-facebook {
-    display: inline-block;
-    position: relative;
-    width: 80px;
-    height: 80px;
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
 }
 
 .lds-facebook div {
-    display: inline-block;
-    position: absolute;
-    left: 8px;
-    width: 16px;
-    background: #fff;
-    animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+  display: inline-block;
+  position: absolute;
+  left: 8px;
+  width: 16px;
+  background: #fff;
+  animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
 }
 
 .lds-facebook div:nth-child(1) {
-    left: 8px;
-    animation-delay: -0.24s;
+  left: 8px;
+  animation-delay: -0.24s;
 }
 
 .lds-facebook div:nth-child(2) {
-    left: 32px;
-    animation-delay: -0.12s;
+  left: 32px;
+  animation-delay: -0.12s;
 }
 
 .lds-facebook div:nth-child(3) {
-    left: 56px;
-    animation-delay: 0;
+  left: 56px;
+  animation-delay: 0;
 }
 
 @keyframes lds-facebook {
-    0% {
-        top: 8px;
-        height: 64px;
-    }
-    50%,
-    100% {
-        top: 24px;
-        height: 32px;
-    }
+  0% {
+    top: 8px;
+    height: 64px;
+  }
+  50%,
+  100% {
+    top: 24px;
+    height: 32px;
+  }
 }
 
 .loader {
-    border: 10px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid #8d8d8d;
-    width: 50px;
-    height: 50px;
-    -webkit-animation: spin 3s linear infinite;
-    /* Safari */
-    animation: spin 3s linear infinite;
-    margin: auto;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
+  border: 10px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid #8d8d8d;
+  width: 50px;
+  height: 50px;
+  -webkit-animation: spin 3s linear infinite;
+  /* Safari */
+  animation: spin 3s linear infinite;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }
-
 
 /* Safari */
 
 @-webkit-keyframes spin {
-    0% {
-        -webkit-transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-    }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
-
 
 /* Pad Card CSS */
 
 .MuiGrid-item {
-    padding: 4px !important;
+  padding: 6px !important;
 }
 
-.card-title {
-    min-height: 35px;
-    word-wrap: break-word;
-    margin: 0 !important;
-}
-
-.card-rating {
-    margin: 0 !important;
+.MuiCardContent-root:last-child {
+  padding-bottom: 5px !important;
 }
 
 .card-info {
-    display: flex;
+  display: flex;
 }
-
 
 /* DashBoard */
 
 .drawerPaper {
-    whitespace: nowrap !important;
-    width: max-content;
-    transition: ease;
-    animation-duration: 100ms;
-    height: max-content;
+  whitespace: nowrap !important;
+  width: max-content;
+  transition: ease;
+  animation-duration: 100ms;
+  height: max-content;
 }
 
 .MuiDrawer-paper {
-    position: relative !important;
-    max-height: 70% !important;
+  position: relative !important;
+  max-height: 70% !important;
 }
 
 .MuiListItemIcon-root {
-    width: max-content !important;
-    min-width: 20px !important;
+  width: max-content !important;
+  min-width: 20px !important;
 }
 
 .dashText {
-    margin-left: 8px;
+  margin-left: 8px;
 }
 
 @media (min-width: 180px) and (max-width: 768px) {
-    .dashText {
-        display: none;
-    }
+  .dashText {
+    display: none;
+  }
 }

@@ -19,19 +19,22 @@ router.post('/add-booking', (req, res, next) => {
           message: 'This Shift is not available',
         });
       } else {
-        let bookingId = `${req.body.shift.replace(
+        let bookingId = `${req.body.shift.slug.replace(
           '-',
           ''
-        )}${req.body.date.replace('/', '-')}`;
+        )}${req.body.date.replace(/\//g, '')}`;
 
-        //TODO: Booking update
-        // Pad.findOneAndUpdate({
-        //   slug: pad,
-        // }).then((pad) => {
-        //   if (pad) {
-
-        //   }
-        // });
+        Pad.findOne({
+          slug: req.body.pad,
+        }).then((res) => {
+          Pad.findOneAndUpdate(
+            {
+              slug: req.body.pad,
+            },
+            { $set: { booked: res.booked + 1 } },
+            { new: true }
+          ).then();
+        });
 
         let booking = new Booking({
           bandname: req.body.bandname,
@@ -41,7 +44,7 @@ router.post('/add-booking', (req, res, next) => {
           pad: req.body.pad,
           date: req.body.date,
           shift: req.body.shift,
-          payment: 0,
+          paid: 0,
           message: req.body.message,
           status: 0,
         });

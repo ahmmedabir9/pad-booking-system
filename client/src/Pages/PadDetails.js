@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
+import { CssBaseline, Grid, Container } from '@material-ui/core';
+import PrimaryButton from '../Components/Buttons/PrimaryButton';
 import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
-import Container from '@material-ui/core/Container';
-import GitHubIcon from '@material-ui/icons/GitHub';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import TwitterIcon from '@material-ui/icons/Twitter';
-import Header from '../Components/DetailsHeader';
 import Detail from '../Components/Detail';
 import PadGallery from '../Components/PadGallery';
 import Description from '../Components/Description';
@@ -19,23 +13,22 @@ const useStyles = makeStyles((theme) => ({
   mainGrid: {
     marginTop: theme.spacing(4),
   },
+  book: {
+    marginTop: '8px',
+    textAlign: 'right',
+  },
 }));
 
 export default function PadDetails({ match }) {
   const classes = useStyles();
-  const [detail, setDetail] = React.useState({});
-
+  const [detail, setDetail] = useState({});
   var slug = match.params.id;
-
-  console.log(slug);
 
   useEffect(() => {
     axios
       .get('http://localhost:5000/api/pads/' + slug)
       .then((res) => {
-        console.log(res.data);
         setDetail(res.data);
-        console.log(res.data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -44,25 +37,30 @@ export default function PadDetails({ match }) {
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth='lg'>
-        <Header detail={detail} />
         <Grid container spacing={4}>
-          <PadGallery />
-          <Detail pad={detail} />
+          <Grid item xs={12} md={7} lg={7}>
+            <PadGallery pad={detail} />
+          </Grid>
+          <Grid item xs={12} md={5} lg={5}>
+            <Detail pad={detail} />
+            <div className={classes.book}>
+              <Link className='link' to={`/Booking/${slug}`}>
+                <PrimaryButton fullWidth variant='contained'>
+                  Book
+                </PrimaryButton>
+              </Link>
+            </div>
+          </Grid>
         </Grid>
+
         <Grid container spacing={4} className={classes.mainGrid}>
-          <Description title='Pad Description' pad={detail} />
-          <Shift slug={slug} />
+          <Grid item xs={12} md={6} lg={6}>
+            <Description title='Description' desc={detail.desc} />
+          </Grid>
+          <Grid item xs={12} md={6} lg={6}>
+            <Shift slug={slug} />
+          </Grid>
         </Grid>
-        <Link className='link' to={`/Booking/${slug}`}>
-          <Button
-            variant='contained'
-            color='secondary'
-            size='small'
-            disableElevation
-          >
-            Book Now
-          </Button>
-        </Link>
       </Container>
     </React.Fragment>
   );

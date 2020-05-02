@@ -1,4 +1,4 @@
-import React, { Component, Suspense } from 'react';
+import React, { Component } from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -23,8 +23,7 @@ import LogInPage from './Pages/Login';
 
 import BookingPage from './Pages/Booking';
 import ManagerDashboard from './Pages/ManagerDashboard/ManagerDashboard';
-// import HomePage from "./Pages/Home";
-const HomePage = React.lazy(() => import('./Pages/Home'));
+import HomePage from './Pages/Home';
 
 class App extends Component {
   render() {
@@ -34,13 +33,11 @@ class App extends Component {
           <CssBaseline />
           <NavBar />
           <div className='main'>
-            <Suspense fallback={<div className='loader'> </div>}>
-              <Switch>
-                <Route path='/' exact render={() => <HomePage />} />
-                <Route path='/pad/:id' component={PadDetailsPage} />
-                <Route path='/Booking/:id' component={BookingPage} />
-              </Switch>
-            </Suspense>
+            <Switch>
+              <Route path='/' exact render={() => <HomePage />} />
+              <Route path='/pad/:id' component={PadDetailsPage} />
+              <Route path='/Booking/:id' component={BookingPage} />
+            </Switch>
 
             <Switch>
               <Route

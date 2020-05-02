@@ -108,7 +108,7 @@ router.post('/login', (req, res, next) => {
                 email: manager.email,
               },
               'SECRET',
-              { expiresIn: '6h' }
+              { expiresIn: '30d' }
             );
 
             res.status(200).json({

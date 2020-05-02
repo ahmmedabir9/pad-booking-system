@@ -45,6 +45,7 @@ router.post('/add-pad', auth, (req, res, next) => {
             let pad = new Pad({
               padname: req.body.padname,
               slug: slug,
+              desc: req.body.desc,
               padmobile: req.body.padmobile,
               padaddress: req.body.padaddress,
               area: req.body.area,

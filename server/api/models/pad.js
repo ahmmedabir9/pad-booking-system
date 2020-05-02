@@ -31,9 +31,6 @@ const padSchema = mongoose.Schema({
   image: {
     type: String,
   },
-  instruments: {
-    type: Object,
-  },
   adpay: {
     type: Number,
     default: 0,

@@ -14,6 +14,12 @@ const bookingReducer = (state = [], action) => {
         return booking;
       });
     }
+    case Types.REMOVE_MYBOOKING: {
+      let mybooking = [...state];
+      return mybooking.filter((booking) => {
+        return booking._id !== action.payload.id;
+      });
+    }
     default:
       return state;
   }
