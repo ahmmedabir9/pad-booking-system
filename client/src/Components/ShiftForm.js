@@ -51,7 +51,8 @@ export default function ShiftForm(props) {
             }}
             label='Shift'
             id='shift'
-            fullWidth>
+            fullWidth
+          >
             {shifts.map((shift, i) => (
               <option key={i} value={shift._id}>
                 {shift.shiftname} - {shift.shiftstart}

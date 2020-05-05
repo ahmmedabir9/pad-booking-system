@@ -11,7 +11,7 @@ import {
   Typography,
   CardActionArea,
 } from '@material-ui/core';
-
+import serverURL from '../utils/serverURL';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 
 const useStyles = makeStyles(() => ({
@@ -36,12 +36,13 @@ const useStyles = makeStyles(() => ({
 
 export default function PadCard(props) {
   const classes = useStyles();
-  const { pad } = props;
-  const heroImage = `http://localhost:5000/${pad.image}`;
+  const { pad, imgID } = props;
+  // const heroImage = `${serverURL}${pad.image}`;
+  const heroImage = `https://picsum.photos/id/${imgID}/400/300`;
   return (
     <Card className={classes.root}>
       <CardActionArea>
-        <Link className='link' to={`/pad/${pad.slug}`}>
+        <Link className='link' to={`/go-jam/pad/${pad.slug}`}>
           <CardMedia
             component='img'
             alt='Pad Image'
@@ -72,12 +73,12 @@ export default function PadCard(props) {
         </Link>
       </CardActionArea>
       <CardActions>
-        <Link className='link' to={`/pad/${pad.slug}`}>
+        <Link className='link' to={`/go-jam/pad/${pad.slug}`}>
           <PrimaryButton variant='contained' size='small' disableElevation>
             View Details
           </PrimaryButton>
         </Link>
-        <Link className='link' to={`/Booking/${pad.slug}`}>
+        <Link className='link' to={`/go-jam/Booking/${pad.slug}`}>
           <SecondaryButton variant='contained' size='small' disableElevation>
             Book Now
           </SecondaryButton>

@@ -15,7 +15,7 @@ import {
   TableRow,
 } from '@material-ui/core';
 import axios from 'axios';
-
+import serverURL from '../utils/serverURL';
 const useStyles = makeStyles({
   card: {
     display: 'flex',
@@ -40,7 +40,7 @@ export default function Shift({ slug }) {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/shifts/' + slug)
+      .get(`${serverURL}shifts/${slug}`)
       .then((res) => {
         setShifts(res.data);
       })

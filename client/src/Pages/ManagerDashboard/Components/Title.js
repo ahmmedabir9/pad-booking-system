@@ -15,7 +15,7 @@ export default function Title(props) {
     <Typography
       component='h2'
       variant='h6'
-      style={{ color: grey[900], fontWeight: 700 }}
+      style={{ color: grey[900], fontWeight: 700, margin: '0px 5px' }}
       gutterBottom
     >
       {props.children}

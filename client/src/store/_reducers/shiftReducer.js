@@ -7,7 +7,7 @@ const shiftReducer = (state = [], action) => {
     }
     case Types.ADD_MYSHIFT: {
       let myshift = [...state];
-      myshift.unshift(action.payload.shift);
+      myshift.unshift(action.payload.myshift);
       return myshift;
     }
     case Types.REMOVE_MYSHIFT: {

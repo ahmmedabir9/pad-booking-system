@@ -1,106 +1,125 @@
-import React from 'react';
-import Link from '@material-ui/core/Link';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Title from './Title';
-
-// Generate Order Data
-function createData(id, date, name, shipTo, paymentMethod, amount) {
-  return { id, date, name, shipTo, paymentMethod, amount };
-}
-
-const rows = [
-  createData(
-    0,
-    '16 Mar, 2019',
-    'Elvis Presley',
-    'Tupelo, MS',
-    'VISA ⠀•••• 3719',
-    312.44
-  ),
-  createData(
-    1,
-    '16 Mar, 2019',
-    'Paul McCartney',
-    'London, UK',
-    'VISA ⠀•••• 2574',
-    866.99
-  ),
-  createData(
-    2,
-    '16 Mar, 2019',
-    'Tom Scholz',
-    'Boston, MA',
-    'MC ⠀•••• 1253',
-    100.81
-  ),
-  createData(
-    3,
-    '16 Mar, 2019',
-    'Michael Jackson',
-    'Gary, IN',
-    'AMEX ⠀•••• 2000',
-    654.39
-  ),
-  createData(
-    4,
-    '15 Mar, 2019',
-    'Bruce Springsteen',
-    'Long Branch, NJ',
-    'VISA ⠀•••• 5919',
-    212.79
-  ),
-];
-
+import React, { useState, useEffect } from 'react';
+import {
+  Table,
+  TableContainer,
+  Typography,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  IconButton,
+} from '@material-ui/core';
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import PrimaryButton from '../../../Components/Buttons/PrimaryButton';
+import { connect } from 'react-redux';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { red, amber, grey } from '@material-ui/core/colors';
+import AddShift from './AddShift';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { loadMyPad } from '../../../store/_actions/padActions';
+import { loadMyBooking } from '../../../store/_actions/bookingAction';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 function preventDefault(event) {
   event.preventDefault();
 }
 
 const useStyles = makeStyles((theme) => ({
-  seeMore: {
-    marginTop: theme.spacing(3),
+  table: {
+    marginBottom: 8,
+  },
+  notFound: {
+    height: '100%',
+    justifyContent: 'center',
+    textAlign: 'center',
+    verticalAlign: 'middle',
+  },
+  errorIcon: {
+    fontSize: '30vh',
+    color: grey[500],
+    textAlign: 'center',
   },
 }));
 
-export default function Booking(props) {
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: grey[300],
+    color: theme.palette.common.black,
+    fontWeight: 600,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
+
+function Booking(props) {
   const classes = useStyles();
+  const { mypad } = props;
+
+  useEffect(() => {
+    props.loadMyBooking(mypad);
+  }, [props.mypad]);
+
+  const { mybooking } = props;
+
   return (
     <React.Fragment>
-      <Title>Recent Booking</Title>
-      <Table size='small'>
-        <TableHead>
-          <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Ship To</TableCell>
-            <TableCell>Payment Method</TableCell>
-            <TableCell>Sale Amount</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {props.booking.map((booking) => (
-            <TableRow key={booking.bandName}>
-              <TableCell>{booking.bandName}</TableCell>
-              <TableCell>{booking.bandPhone}</TableCell>
-              <TableCell>{booking.shift}</TableCell>
-              <TableCell>{booking.date}</TableCell>
-              <TableCell>{booking.payment}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <div className={classes.seeMore}>
-        <Link
-          color='primary'
-          href='/ManagerDashboard/Booking'
-          onClick={preventDefault}>
-          See more Booking
-        </Link>
-      </div>
+      <Typography
+        component='h2'
+        variant='h6'
+        style={{ color: grey[900], fontWeight: 700, margin: '0px 5px' }}
+        gutterBottom
+      >
+        Pending Bookings
+      </Typography>
+      <TableContainer className={classes.table}>
+        {mybooking[0] ? (
+          <Table size='small'>
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>Booking ID</StyledTableCell>
+                <StyledTableCell>Band</StyledTableCell>
+                <StyledTableCell>Shift</StyledTableCell>
+                <StyledTableCell>Date</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {mybooking.map((booking) =>
+                booking.status === 0 ? (
+                  <TableRow key={booking._id}>
+                    <TableCell>{booking.bookingid}</TableCell>
+                    <TableCell>{booking.bandname}</TableCell>
+                    <TableCell>{booking.shift.slug}</TableCell>
+                    <TableCell>{booking.date}</TableCell>
+                  </TableRow>
+                ) : null
+              )}
+            </TableBody>
+          </Table>
+        ) : (
+          <div className={classes.notFound}>
+            <ErrorOutlineIcon className={classes.errorIcon} />
+            <Typography variant='h5' component='h6' color='textSecondary'>
+              No Booking Pending
+            </Typography>
+          </div>
+        )}
+      </TableContainer>
+      <Link className='link' to={`/go-jam/ManagerDashboard/Booking`}>
+        <PrimaryButton fullWidth className={classes.margin} variant='contained'>
+          All Booking
+        </PrimaryButton>
+      </Link>
     </React.Fragment>
   );
 }
+
+const mapStateToProps = (state) => ({
+  mybooking: state.mybooking,
+  mypad: state.mypad,
+});
+
+export default connect(mapStateToProps, {
+  loadMyBooking,
+  loadMyPad,
+})(Booking);

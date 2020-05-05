@@ -9,6 +9,8 @@ const bookingReducer = (state = [], action) => {
       let mybooking = [...state];
       return mybooking.map((booking) => {
         if (booking._id === action.payload.mybooking._id) {
+          console.log(action.payload.mybooking);
+
           return action.payload.mybooking;
         }
         return booking;

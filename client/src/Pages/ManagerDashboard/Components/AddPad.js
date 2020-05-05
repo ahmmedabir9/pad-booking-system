@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-
+import serverURL from '../../../utils/serverURL';
 import {
   Input,
   Grid,
@@ -80,7 +80,7 @@ function AddPad(props) {
   let { open, handleClose, pad, handleSubmit, fileSelectedHandler } = props;
   let padImage;
   if (pad?.image) {
-    padImage = `http://localhost:5000/${pad.image}`;
+    padImage = `${serverURL}${pad.image}`;
   }
   return (
     <Dialog

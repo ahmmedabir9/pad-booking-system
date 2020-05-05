@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import serverURL from '../../utils/serverURL';
 import * as Types from './types';
 
 export const loadMyShift = () => (dispatch) => {
@@ -7,7 +7,7 @@ export const loadMyShift = () => (dispatch) => {
     'auth_token'
   );
   axios
-    .get('http://localhost:5000/api/manageshift/')
+    .get(`${serverURL}manageshift/`)
     .then((response) => {
       dispatch({
         type: Types.LOAD_MYSHIFT,
@@ -21,13 +21,17 @@ export const loadMyShift = () => (dispatch) => {
 
 export const addMyShift = (data) => (dispatch) => {
   axios
-    .post('http://localhost:5000/api/manageshift/add-shift', data)
+    .post(`${serverURL}manageshift/add-shift`, data)
     .then((response) => {
-      console.log(response);
-      dispatch({
-        type: Types.ADD_MYSHIFT,
-        payload: { myshift: response.data },
-      });
+      if (response.data.shift) {
+        dispatch({
+          type: Types.ADD_MYSHIFT,
+          payload: { myshift: response.data.shift },
+        });
+        return true;
+      } else {
+        return false;
+      }
     })
     .catch((error) => {
       console.log(error);
@@ -36,7 +40,7 @@ export const addMyShift = (data) => (dispatch) => {
 
 export const removeMyShift = (id) => (dispatch) => {
   axios
-    .delete(`http://localhost:5000/api/manageshift/${id}`)
+    .delete(`${serverURL}manageshift/${id}`)
     .then((response) => {
       dispatch({
         type: Types.REMOVE_MYSHIFT,

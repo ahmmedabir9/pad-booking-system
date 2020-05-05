@@ -23,7 +23,7 @@ import LuxonUtils from '@date-io/luxon';
 import EmailIcon from '@material-ui/icons/Email';
 import PhoneIcon from '@material-ui/icons/Phone';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
-
+import serverURL from '../utils/serverURL';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -80,13 +80,13 @@ export default function BookingPage({ match }) {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/pads/' + slug)
+      .get(`${serverURL}pads/${slug}`)
       .then((res) => {
         setPad(res.data);
       })
       .catch((err) => console.log(err));
     axios
-      .get('http://localhost:5000/api/shifts/' + slug)
+      .get(`${serverURL}shifts/${slug}`)
       .then((res) => {
         setShifts(res.data);
       })
@@ -114,7 +114,7 @@ export default function BookingPage({ match }) {
       };
 
       axios
-        .post('http://localhost:5000/api/bookings/add-booking', data)
+        .post(`${serverURL}bookings/add-booking`, data)
         .then((res) => {
           if (res.data.booking) {
             setNotAvailable(false);

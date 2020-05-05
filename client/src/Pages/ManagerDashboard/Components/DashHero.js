@@ -11,13 +11,7 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 
 const useStyles = makeStyles((theme) => ({
   DashHero: {
-    position: 'relative',
-    backgroundColor: theme.palette.grey[800],
-    color: theme.palette.common.white,
-    marginBottom: theme.spacing(4),
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
+    width: '100%',
   },
   overlay: {
     position: 'absolute',
@@ -41,30 +35,5 @@ export default function DashHero(props) {
   const classes = useStyles();
   const { detail } = props;
 
-  return (
-    <Paper
-      className={classes.DashHero}
-      style={{ backgroundImage: `url(${heroImage})` }}>
-      {/* Increase the priority of the hero background image */}
-      {<img style={{ display: 'none' }} src={heroImage} />}
-      <div className={classes.overlay} />
-      <Grid container>
-        <Grid item md={6}>
-          <div className={classes.DashHeroContent}>
-            <Typography
-              component='h1'
-              variant='h3'
-              color='inherit'
-              gutterBottom>
-              jhjh
-            </Typography>
-          </div>
-        </Grid>
-      </Grid>
-    </Paper>
-  );
+  return <Paper>{<img src={heroImage} className={classes.dashHero} />}</Paper>;
 }
-
-DashHero.propTypes = {
-  post: PropTypes.object,
-};

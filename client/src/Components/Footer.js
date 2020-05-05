@@ -48,11 +48,11 @@ function Footer(props) {
         <Container maxWidth='sm'>
           <div className={classes.link}>
             {props.auth.isAuthenticated ? (
-              <Link className='link' to={`/ManagerDashboard`}>
+              <Link className='link' to={`/go-jam/ManagerDashboard`}>
                 Manager Area
               </Link>
             ) : (
-              <Link className='link' to={`/Login`}>
+              <Link className='link' to={`/go-jam/Login`}>
                 Manager Area
               </Link>
             )}

@@ -8,6 +8,7 @@ import Detail from '../Components/Detail';
 import PadGallery from '../Components/PadGallery';
 import Description from '../Components/Description';
 import Shift from '../Components/Shift';
+import serverURL from '../utils/serverURL';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -26,7 +27,7 @@ export default function PadDetails({ match }) {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/pads/' + slug)
+      .get(`${serverURL}pads/${slug}`)
       .then((res) => {
         setDetail(res.data);
       })
@@ -44,7 +45,7 @@ export default function PadDetails({ match }) {
           <Grid item xs={12} md={5} lg={5}>
             <Detail pad={detail} />
             <div className={classes.book}>
-              <Link className='link' to={`/Booking/${slug}`}>
+              <Link className='link' to={`/go-jam/Booking/${slug}`}>
                 <PrimaryButton fullWidth variant='contained'>
                   Book
                 </PrimaryButton>

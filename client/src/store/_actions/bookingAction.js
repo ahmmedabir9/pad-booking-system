@@ -2,16 +2,15 @@ import axios from 'axios';
 
 import * as Types from './types';
 
-export const loadMyBooking = (pad) => (dispatch) => {
-  console.log(pad);
+import serverURL from '../../utils/serverURL';
 
+export const loadMyBooking = (pad) => (dispatch) => {
   axios.defaults.headers.common['Authorization'] = localStorage.getItem(
     'auth_token'
   );
   axios
-    .post('http://localhost:5000/api/managebooking/', pad)
+    .post(`${serverURL}managebooking/`, pad)
     .then((response) => {
-      console.log(response.data);
       dispatch({
         type: Types.LOAD_MYBOOKING,
         payload: { mybooking: response.data },
@@ -24,7 +23,7 @@ export const loadMyBooking = (pad) => (dispatch) => {
 
 export const removeMyBooking = (id) => (dispatch) => {
   axios
-    .delete(`http://localhost:5000/api/managebooking/${id}`)
+    .delete(`${serverURL}managebooking/${id}`)
     .then((response) => {
       dispatch({
         type: Types.REMOVE_MYBOOKING,
@@ -36,11 +35,13 @@ export const removeMyBooking = (id) => (dispatch) => {
 
 export const updateMyBooking = (id, booking) => (dispatch) => {
   axios
-    .put(`http://localhost:5000/api/manageshift/${id}`, booking)
+    .put(`${serverURL}managebooking/${id}`, booking)
     .then((response) => {
+      console.log(response.data.Booking);
+
       dispatch({
-        types: Types.UPDATE_MYBOOKING,
-        payload: { booking: response.data.booking },
+        type: Types.UPDATE_MYBOOKING,
+        payload: { mybooking: response.data.Booking },
       });
     })
     .catch((error) => {

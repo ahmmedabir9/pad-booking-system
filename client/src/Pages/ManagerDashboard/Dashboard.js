@@ -1,32 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
 import clsx from 'clsx';
-import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
-import Box from '@material-ui/core/Box';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import DashHero from './Components/DashHero';
 import UserCard from './Components/UserCard';
 import Booking from './Components/Booking';
 import Shift from './Components/Shift';
-
 import { connect } from 'react-redux';
 import { logout } from '../../store/_actions/authActions';
+import { loadMyPad } from '../../store/_actions/padActions';
+import { loadMyShift } from '../../store/_actions/shiftActions';
+import { loadMyBooking } from '../../store/_actions/bookingAction';
 
 const drawerWidth = 240;
 
@@ -87,34 +73,48 @@ const useStyles = makeStyles((theme) => ({
   fixedHeight: {
     height: 240,
   },
+  dashHero: {
+    maxHeight: 240,
+    overflow: 'hidden',
+  },
+  img: {
+    width: '100%',
+  },
 }));
 
 function Dashboard(props) {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+  const heroImage = `https://picsum.photos/800/600`;
 
+  useEffect(() => {
+    props.loadMyPad();
+  }, []);
+  let { mypad } = props;
+
+  const manager = props.auth.user;
   return (
     <div>
       <Container maxWidth='lg' className={classes.container}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={8} lg={9}>
+          <Grid item xs={12} md={9} lg={9}>
+            <Paper className={classes.dashHero}>
+              {<img src={heroImage} className={classes.img} />}
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={3} lg={3}>
             <Paper className={fixedHeightPaper}>
-              <DashHero />
+              <UserCard manager={manager} pad={mypad} />
             </Paper>
           </Grid>
-          <Grid item xs={12} md={4} lg={3}>
-            <Paper className={fixedHeightPaper}>
-              <UserCard manager={props.manager} pad={props.pad} />
-            </Paper>
-          </Grid>
-          <Grid item xs={12} md={5} lg={5}>
+          <Grid item xs={12} md={6} lg={6}>
             <Paper className={classes.paper}>
-              <Shift pad={props.pad} padShift={props.padShift} />
+              <Shift />
             </Paper>
           </Grid>
-          <Grid item xs={12} md={7} lg={7}>
+          <Grid item xs={12} md={6} lg={6}>
             <Paper className={classes.paper}>
-              <Booking booking={props.booking} />
+              <Booking pad={mypad} />
             </Paper>
           </Grid>
         </Grid>
@@ -125,6 +125,14 @@ function Dashboard(props) {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
+  mypad: state.mypad,
+  myshift: state.myshift,
+  mybooking: state.mybooking,
 });
 
-export default connect(mapStateToProps, { logout })(Dashboard);
+export default connect(mapStateToProps, {
+  logout,
+  loadMyPad,
+  loadMyShift,
+  loadMyBooking,
+})(Dashboard);

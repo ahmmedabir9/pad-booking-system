@@ -120,7 +120,7 @@ function ManagerDashboard(props) {
       <Drawer variant='permanent' className='drawerPaper'>
         <List>
           <div>
-            <Link className='link' to={`/ManagerDashboard`}>
+            <Link className='link' to={`/go-jam/ManagerDashboard`}>
               <ListItem button>
                 <ListItemIcon>
                   <DashboardIcon />
@@ -128,7 +128,7 @@ function ManagerDashboard(props) {
                 <ListItemText className='dashText' primary='Dashboard' />
               </ListItem>
             </Link>
-            <Link className='link' to={`/ManagerDashboard/Booking`}>
+            <Link className='link' to={`/go-jam/ManagerDashboard/Booking`}>
               <ListItem button>
                 <ListItemIcon>
                   <PeopleIcon />
@@ -136,7 +136,7 @@ function ManagerDashboard(props) {
                 <ListItemText className='dashText' primary='Booking' />
               </ListItem>
             </Link>
-            <Link className='link' to={`/ManagerDashboard/PadInfo`}>
+            <Link className='link' to={`/go-jam/ManagerDashboard/PadInfo`}>
               <ListItem button>
                 <ListItemIcon>
                   <BarChartIcon />
@@ -144,7 +144,7 @@ function ManagerDashboard(props) {
                 <ListItemText className='dashText' primary='Pad Info' />
               </ListItem>
             </Link>
-            <Link className='link' to={`/ManagerDashboard/Manager`}>
+            <Link className='link' to={`/go-jam/ManagerDashboard/Manager`}>
               <ListItem button>
                 <ListItemIcon>
                   <LayersIcon />
@@ -159,27 +159,20 @@ function ManagerDashboard(props) {
         <Container maxWidth='lg' className={classes.container}>
           <Switch>
             <Route
-              path='/ManagerDashboard'
+              path='/go-jam/ManagerDashboard'
               exact
-              render={() => (
-                <Dashboard
-                  manager={manager}
-                  pad={mypad}
-                  booking={booking}
-                  padShift={myshift}
-                />
-              )}
+              render={() => <Dashboard />}
             />
             <Route
-              path='/ManagerDashboard/Booking'
+              path='/go-jam/ManagerDashboard/Booking'
               render={() => <Booking pad={mypad} />}
             />
             <Route
-              path='/ManagerDashboard/PadInfo'
+              path='/go-jam/ManagerDashboard/PadInfo'
               render={() => <PadInfo pad={mypad} />}
             />
             <Route
-              path='/ManagerDashboard/Manager'
+              path='/go-jam/ManagerDashboard/Manager'
               render={() => <Manager />}
             />
           </Switch>

@@ -1,3 +1,8 @@
 /client/node_modules
+/client/.gitignore
+/client/.git
+/client/build
 
 /server/node_modules
+/server/.gitignore
+/server/.git

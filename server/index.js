@@ -39,16 +39,18 @@ const managePadRoute = require('./api/routes/managePadRoute');
 const manageShiftRoute = require('./api/routes/manageShiftRoute');
 const manageBookingRoute = require('./api/routes/manageBookingRoute');
 
-app.use('/api/managers', managerRoute);
-app.use('/api/pads', padRoute);
-app.use('/api/shifts', shiftRoute);
-app.use('/api/bookings', bookingRoute);
-app.use('/api/managepad', managePadRoute);
-app.use('/api/manageshift', manageShiftRoute);
-app.use('/api/managebooking', manageBookingRoute);
+app.use('/gojambybohemian/managers', managerRoute);
+app.use('/gojambybohemian/pads', padRoute);
+app.use('/gojambybohemian/shifts', shiftRoute);
+app.use('/gojambybohemian/bookings', bookingRoute);
+app.use('/gojambybohemian/managepad', managePadRoute);
+app.use('/gojambybohemian/manageshift', manageShiftRoute);
+app.use('/gojambybohemian/managebooking', manageBookingRoute);
 
 app.get('/', (req, res) => {
   res.send('<div><h1>The Server is Running</h1></div>');
 });
 
-app.listen(5000);
+var port = process.env.PORT || 5000;
+
+app.listen(port);

@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Switch,
+  Redirect,
+} from 'react-router-dom';
 import { connect } from 'react-redux';
 import { login } from '../store/_actions/authActions';
 import Avatar from '@material-ui/core/Avatar';
@@ -9,7 +15,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -101,12 +106,13 @@ function Login(props) {
             fullWidth
             variant='contained'
             color='primary'
-            className={classes.submit}>
+            className={classes.submit}
+          >
             Login
           </Button>
           <Grid container justify='flex-end'>
             <Grid item>
-              <Link href='/Signup' variant='body2'>
+              <Link to={'/go-jam/Signup'} variant='body2'>
                 New User ? Sign Up
               </Link>
             </Grid>

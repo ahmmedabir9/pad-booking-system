@@ -1,49 +1,58 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Title from './Title';
-import Button from '@material-ui/core/Button';
+import { Typography, Divider } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { logout } from '../../../store/_actions/authActions';
-
-function preventDefault(event) {
-  event.preventDefault();
-}
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import SecondaryButton from '../../../Components/Buttons/SecondaryButton';
 
 const useStyles = makeStyles({
-  depositContext: {
-    flex: 1,
+  manager: {
+    display: 'flex',
+    marginBottom: 4,
   },
 });
 
 function UserCard(props) {
   const classes = useStyles();
+
+  const { manager, pad } = props;
   return (
     <React.Fragment>
-      <Title>{props.manager.username}</Title>
-      <Typography component='p' variant='h4'>
-        {props.pad.padname}
-      </Typography>
-      <Typography color='textSecondary' className={classes.depositContext}>
-        {props.pad.area}
-      </Typography>
-      <Typography color='textSecondary' className={classes.depositContext}>
-        {props.pad.district}
-      </Typography>
-      <Link className='link' to={`/Login`}>
-        <Button
-          variant='contained'
-          color='secondary'
-          size='small'
-          onClick={() => {
-            props.logout(props.history);
-          }}
-          disableElevation
+      <div className={classes.manager}>
+        <FiberManualRecordIcon
+          style={{ fontSize: 20, color: 'green', justifyContent: 'center' }}
+        />
+        <Typography
+          component='p'
+          variant='h6'
+          style={{ margin: '0px 5px' }}
+          gutterBottom
         >
-          Logout
-        </Button>
-      </Link>
+          {manager.username}
+        </Typography>
+        <Link className='link' to={`/go-jam/Login`}>
+          <SecondaryButton
+            size='small'
+            onClick={() => {
+              props.logout(props.history);
+            }}
+            disableElevation
+          >
+            Logout
+          </SecondaryButton>
+        </Link>
+      </div>
+      <Divider />
+      <Typography style={{ marginTop: '5px' }} component='h6' variant='h5'>
+        {pad.padname}
+      </Typography>
+      <Typography color='textSecondary'>{pad.padmobile}</Typography>
+      <Typography color='textSecondary'>{pad.padaddress}</Typography>
+      <Typography color='textSecondary'>
+        {pad.area}, {pad.district}
+      </Typography>
     </React.Fragment>
   );
 }

@@ -13,6 +13,7 @@ import {
   Grid,
   Box,
 } from '@material-ui/core';
+import serverURL from '../utils/serverURL';
 import SearchIcon from '@material-ui/icons/Search';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 const useStyles = makeStyles((theme) => ({
@@ -53,11 +54,12 @@ export default function Cards() {
   const [cards, setCards] = useState([]);
   const [searchData, setSearchData] = useState({});
   const [loading, setLoading] = useState(true);
+  let imgID = 1000;
 
   const searchHandler = (e) => {
     e.preventDefault();
     axios
-      .post('http://localhost:5000/api/pads', searchData)
+      .post(`${serverURL}pads`, searchData)
       .then((res) => {
         setLoading(false);
         setCards(res.data);
@@ -68,7 +70,7 @@ export default function Cards() {
   useEffect(() => {
     setSearchData({});
     axios
-      .post('http://localhost:5000/api/pads')
+      .post(`${serverURL}pads`)
       .then((res) => {
         setLoading(false);
         setCards(res.data);
@@ -130,7 +132,7 @@ export default function Cards() {
               ) : (
                 cards.map((pad) => (
                   <Grid key={pad} item>
-                    <PadCard key={pad._id} pad={pad} />
+                    <PadCard key={pad._id} pad={pad} imgID={imgID++} />
                   </Grid>
                 ))
               )}

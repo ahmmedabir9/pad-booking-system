@@ -2,10 +2,11 @@ import * as Types from './types';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import setAuthToken from '../../utils/setAuthToken';
+import serverURL from '../../utils/serverURL';
 
 export const register = (user, history) => (dispatch) => {
   axios
-    .post('http://localhost:5000/api/managers/register', user)
+    .post(`${serverURL}managers/register`, user)
     .then((res) => {
       console.log(res);
       if (res.data.registerSuccess) {
@@ -32,7 +33,7 @@ export const register = (user, history) => (dispatch) => {
 
 export const login = (user, history) => (dispatch) => {
   axios
-    .post('http://localhost:5000/api/managers/login', user)
+    .post(`${serverURL}managers/login`, user)
     .then((res) => {
       let token = res.data.token;
       localStorage.setItem('auth_token', token);

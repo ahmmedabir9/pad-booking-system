@@ -14,6 +14,7 @@ import { Button } from '@material-ui/core';
 
 import AddPad from './Components/AddPad';
 import PadInfoForm from './Components/PadInfoForm';
+import serverURL from '../../utils/serverURL';
 
 const drawerWidth = 240;
 
@@ -160,15 +161,17 @@ function PadInfo(props) {
 
     console.log(formData);
 
-    axios.post('/api/managepad/upload', formData, config).then((response) => {
-      if (response.data.success) {
-        console.log(response.data.image);
+    axios
+      .post(`${serverURL}managepad/upload`, formData, config)
+      .then((response) => {
+        if (response.data.success) {
+          console.log(response.data.image);
 
-        setImageToSave(response.data.image);
-      } else {
-        alert('Failed to save the Image in Server');
-      }
-    });
+          setImageToSave(response.data.image);
+        } else {
+          alert('Failed to save the Image in Server');
+        }
+      });
   };
 
   return (

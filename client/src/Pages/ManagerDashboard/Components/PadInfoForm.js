@@ -9,7 +9,7 @@ import {
   TextField,
   Button,
 } from '@material-ui/core';
-
+import serverURL from '../../../utils/serverURL';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { updateMyPad } from '../../../store/_actions/padActions';
@@ -89,7 +89,7 @@ function PadInfoForm(props) {
 
   let padImage;
   if (pad.image) {
-    padImage = `http://localhost:5000/${pad.image}`;
+    padImage = `${serverURL}${pad.image}`;
   }
   return (
     <div>

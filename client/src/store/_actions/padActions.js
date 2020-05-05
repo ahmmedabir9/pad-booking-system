@@ -1,4 +1,5 @@
 import axios from 'axios';
+import serverURL from '../../utils/serverURL';
 
 import * as Types from './types';
 
@@ -7,7 +8,7 @@ export const loadMyPad = () => (dispatch) => {
     'auth_token'
   );
   axios
-    .get('http://localhost:5000/api/managepad/')
+    .get(`${serverURL}managepad/`)
     .then((response) => {
       dispatch({
         type: Types.LOAD_MYPAD,
@@ -21,7 +22,7 @@ export const loadMyPad = () => (dispatch) => {
 
 export const addMyPad = (data) => (dispatch) => {
   axios
-    .post('http://localhost:5000/api/managepad/add-pad', data)
+    .post(`${serverURL}managepad/add-pad`, data)
     .then((response) => {
       console.log(response);
       dispatch({
@@ -34,7 +35,7 @@ export const addMyPad = (data) => (dispatch) => {
 
 export const removeMyPad = (id) => (dispatch) => {
   axios
-    .delete(`http://localhost:5000/api/managepad/${id}`)
+    .delete(`${serverURL}managepad/${id}`)
     .then((response) => {
       dispatch({
         type: Types.REMOVE_MYPAD,
@@ -46,7 +47,7 @@ export const removeMyPad = (id) => (dispatch) => {
 
 export const updateMyPad = (id, pad) => (dispatch) => {
   axios
-    .put(`http://localhost:5000/api/managepad/${id}`, pad)
+    .put(`${serverURL}managepad/${id}`, pad)
     .then((response) => {
       dispatch({
         type: Types.UPDATE_MYPAD,

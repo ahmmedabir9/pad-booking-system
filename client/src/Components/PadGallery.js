@@ -10,7 +10,9 @@ const useStyles = makeStyles(() => ({
 
 export default function PadGallery({ pad }) {
   const classes = useStyles();
-  const heroImage = `http://localhost:5000/${pad.image}`;
+  // const heroImage = `http://localhost:5000/${pad.image}`;
+  const heroImage = `https://picsum.photos/500/400`;
+
   return (
     <Paper className={classes.gallery}>
       <Card>
