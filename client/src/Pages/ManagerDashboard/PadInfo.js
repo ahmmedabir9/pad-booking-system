@@ -9,9 +9,12 @@ import {
   loadMyPad,
   updateMyPad,
 } from '../../store/_actions/padActions';
-
-import { Button } from '@material-ui/core';
-
+import {
+  grey,
+} from '@material-ui/core/colors';
+import { Typography, Paper } from '@material-ui/core';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import PrimaryButton from '../../Components/Buttons/PrimaryButton';
 import AddPad from './Components/AddPad';
 import PadInfoForm from './Components/PadInfoForm';
 import serverURL from '../../utils/serverURL';
@@ -38,6 +41,17 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+  },
+  notFound: {
+    height: '35vh',
+    justifyContent: 'center',
+    textAlign: 'center',
+    verticalAlign: 'middle',
+  },
+  errorIcon: {
+    fontSize: '20vh',
+    color: grey[500],
+    textAlign: 'center',
   },
   appBarShift: {
     marginLeft: drawerWidth,
@@ -67,9 +81,9 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(2),
   },
   paper: {
-    display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    padding: 10,
   },
   fixedHeight: {
     height: 240,
@@ -84,14 +98,11 @@ function PadInfo(props) {
   const [ImageToSave, setImageToSave] = useState('');
   const [open, setOpen] = React.useState(false);
 
-  // useEffect(() => {
-  //   props.loadMyPad();
-  // }, []);
-
   useEffect(() => {
     props.loadMyPad();
-    setPad(props.pad);
-  }, [props.pad]);
+  }, []);
+
+  const { mypad } = props;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -102,6 +113,7 @@ function PadInfo(props) {
   };
 
   const handleSubmit = (e) => {
+    e.preventDefault();
     const data = {
       padname: e.target.padname.value,
       desc: e.target.desc.value,
@@ -111,17 +123,13 @@ function PadInfo(props) {
       adpay: e.target.adpay.value,
       district: e.target.district.value,
       padaddress: e.target.padaddress.value,
-      image: ImageToSave,
+      image: '',
     };
 
     props.addMyPad(data);
 
     console.log(data);
-    // props.loadMyPad();
-    // setPad(props.pad);
     handleClose();
-
-    e.preventDefault();
   };
 
   const handleDelete = () => {
@@ -166,7 +174,6 @@ function PadInfo(props) {
       .then((response) => {
         if (response.data.success) {
           console.log(response.data.image);
-
           setImageToSave(response.data.image);
         } else {
           alert('Failed to save the Image in Server');
@@ -176,34 +183,46 @@ function PadInfo(props) {
 
   return (
     <div>
-      {!pad?._id ? (
-        <div className={classes.paper}>
-          <h1>You dont have any pad</h1>
-          <Button variant='outlined' color='primary' onClick={handleClickOpen}>
+      {!mypad?._id ? (
+        <div className={classes.notFound}>
+          <ErrorOutlineIcon className={classes.errorIcon} />
+          <Typography variant='h3' component='h4' color='textSecondary'>
+            You Don't have any Pad yet!
+          </Typography>
+          <PrimaryButton onClick={handleClickOpen}>
             Create Your Pad
-          </Button>
+          </PrimaryButton>
         </div>
       ) : (
-        <div className={classes.paper}>
-          <h1>{pad.padname}</h1>
+        <Paper className={classes.paper}>
+          <div style={{ margin: 10 }}>
+            <Typography component='h1' variant='h5' align='center'>
+              {mypad.padname}
+            </Typography>
+            <Typography
+              component='p'
+              variant='p'
+              color='textSecondary'
+              align='center'
+            >
+              {mypad.area}, {mypad.district}
+            </Typography>
+          </div>
           <PadInfoForm
             open={open}
             handleClose={handleClose}
             handleUpdate={handleUpdate}
-            pad={pad}
+            pad={mypad}
             fileSelectedHandler={fileSelectedHandler}
+            handleDelete={handleDelete}
           />
-          <Button variant='outlined' color='primary' onClick={handleDelete}>
-            Delete Your Pad
-          </Button>
-        </div>
+        </Paper>
       )}
 
       <AddPad
         open={open}
         handleClose={handleClose}
         handleSubmit={handleSubmit}
-        pad={pad}
         fileSelectedHandler={fileSelectedHandler}
       />
     </div>
@@ -211,9 +230,12 @@ function PadInfo(props) {
 }
 
 const mapStateToProps = (state) => ({
-  pad: state.mypad,
+  mypad: state.mypad,
 });
 
-export default connect(null, { addMyPad, removeMyPad, loadMyPad, updateMyPad })(
-  PadInfo
-);
+export default connect(mapStateToProps, {
+  addMyPad,
+  removeMyPad,
+  loadMyPad,
+  updateMyPad,
+})(PadInfo);

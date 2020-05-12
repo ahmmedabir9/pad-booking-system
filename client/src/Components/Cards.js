@@ -54,7 +54,7 @@ export default function Cards() {
   const [cards, setCards] = useState([]);
   const [searchData, setSearchData] = useState({});
   const [loading, setLoading] = useState(true);
-  let imgID = 1000;
+  let imgID = 400;
 
   const searchHandler = (e) => {
     e.preventDefault();

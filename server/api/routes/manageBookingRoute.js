@@ -7,6 +7,7 @@ const { Booking } = require('../models/booking');
 router.post('/', auth, (req, res) => {
   let pad = req.body.slug;
   Booking.find({ pad: pad })
+    .sort({ _id: -1 })
     .then((bookings) => {
       if (!bookings) {
         res.status(400).json({
@@ -35,7 +36,7 @@ router.put('/:bookingid', auth, (req, res) => {
     .then((result) => {
       res.status(200).json({
         message: 'Booking Info Updated',
-        Booking: result,
+        booking: result,
       });
     })
     .catch((error) => {

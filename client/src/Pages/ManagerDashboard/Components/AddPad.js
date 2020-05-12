@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import serverURL from '../../../utils/serverURL';
 import {
   Input,
   Grid,
@@ -77,11 +76,8 @@ const useStyles = makeStyles((theme) => ({
 
 function AddPad(props) {
   const classes = useStyles();
-  let { open, handleClose, pad, handleSubmit, fileSelectedHandler } = props;
-  let padImage;
-  if (pad?.image) {
-    padImage = `${serverURL}${pad.image}`;
-  }
+  let { open, handleClose, handleSubmit, fileSelectedHandler } = props;
+
   return (
     <Dialog
       open={open}
@@ -96,91 +92,72 @@ function AddPad(props) {
               <Grid item xs={12}>
                 <TextField
                   variant='outlined'
-                  required
                   fullWidth
                   id='padname'
                   label='Pad Name'
                   name='padname'
-                  placeholder={pad.padname}
-                  value={pad.padname}
                 />
               </Grid>
               <Grid item xs={12}>
-                <textarea
-                  variant='outlined'
-                  required
-                  fullWidth
+                <TextField
                   id='desc'
-                  label='Description'
                   name='desc'
-                  placeholder={pad.desc}
-                  value={pad.desc}
+                  label='Description'
+                  fullWidth
+                  multiline
+                  rows={4}
+                  variant='outlined'
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   variant='outlined'
-                  required
                   fullWidth
                   id='padmobile'
                   label='Contact Number'
                   name='padmobile'
-                  placeholder={pad.padmobile}
-                  value={pad.padmobile}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   variant='outlined'
-                  required
                   fullWidth
                   id='padaddress'
                   label='Full Address'
                   name='padaddress'
-                  placeholder={pad.padaddress}
-                  value={pad.padaddress}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   variant='outlined'
-                  required
                   fullWidth
                   id='area'
                   label='Area'
                   name='area'
                   placeholder='ex: Uttara'
-                  placeholder={pad.area}
-                  value={pad.area}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   variant='outlined'
-                  required
                   fullWidth
                   id='district'
                   label='District'
                   name='district'
-                  placeholder={pad.district}
-                  value={pad.district}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   variant='outlined'
-                  required
                   fullWidth
                   id='adpay'
                   label='Advance Payable'
                   name='adpay'
                   placeholder='write %'
-                  placeholder={pad.adpay}
-                  value={pad.adpay}
                 />
               </Grid>
             </Grid>
-            <Grid container spacing={2}>
+            {/* <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Input type='file' onChange={fileSelectedHandler} />
               </Grid>
@@ -189,7 +166,7 @@ function AddPad(props) {
                   <img src={padImage} style={{ maxWidth: '100%' }} />
                 </Grid>
               )}
-            </Grid>
+            </Grid> */}
           </Grid>
         </DialogContent>
         <DialogActions>

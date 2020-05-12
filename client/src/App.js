@@ -24,6 +24,7 @@ import LogInPage from './Pages/Login';
 import BookingPage from './Pages/Booking';
 import ManagerDashboard from './Pages/ManagerDashboard/ManagerDashboard';
 import HomePage from './Pages/Home';
+import MyBooking from './Pages/MyBooking';
 
 class App extends Component {
   render() {
@@ -37,6 +38,7 @@ class App extends Component {
               <Route path='/go-jam' exact render={() => <HomePage />} />
               <Route path='/go-jam/pad/:id' component={PadDetailsPage} />
               <Route path='/go-jam/Booking/:id' component={BookingPage} />
+              <Route path='/go-jam/Track-My-Booking/' component={MyBooking} />
             </Switch>
 
             <Switch>

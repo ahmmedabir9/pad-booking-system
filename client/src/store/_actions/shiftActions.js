@@ -28,9 +28,7 @@ export const addMyShift = (data) => (dispatch) => {
           type: Types.ADD_MYSHIFT,
           payload: { myshift: response.data.shift },
         });
-        return true;
-      } else {
-        return false;
+        return response.data.shift;
       }
     })
     .catch((error) => {

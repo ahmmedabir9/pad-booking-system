@@ -45,7 +45,7 @@ router.get('/', auth, (req, res) => {
   let { _id } = req.manager;
 
   Shift.find({ manager: _id })
-    .sort({ shiftstart: 1 })
+
     .then((shifts) => {
       if (!shifts) {
         res.status(400).json({

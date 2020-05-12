@@ -29,10 +29,6 @@ const bookingSchema = mongoose.Schema({
     type: String,
     require: true,
   },
-  paid: {
-    type: Number,
-    require: true,
-  },
   message: {
     type: String,
     require: true,

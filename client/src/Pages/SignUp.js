@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { register } from '../store/_actions/authActions';
 import Avatar from '@material-ui/core/Avatar';
-import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -106,12 +103,13 @@ function SignUp(props) {
             fullWidth
             variant='contained'
             color='primary'
-            className={classes.submit}>
+            className={classes.submit}
+          >
             Sign Up
           </Button>
           <Grid container justify='flex-end'>
             <Grid item>
-              <Link href='#' variant='body2'>
+              <Link to={'/go-jam/login'} variant='body2'>
                 Already have an account ? Sign in
               </Link>
             </Grid>

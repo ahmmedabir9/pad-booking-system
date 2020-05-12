@@ -77,12 +77,9 @@ function Shift(props) {
         pad: mypad.slug,
       };
 
-      const res = props.addMyShift(data);
-      if (!res) {
-        setNotAvailable(true);
-      } else {
-        handleClose();
-      }
+      props.addMyShift(data);
+
+      handleClose();
     }
   };
 

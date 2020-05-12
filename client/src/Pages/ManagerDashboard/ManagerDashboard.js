@@ -17,7 +17,8 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
-
+import BookIcon from '@material-ui/icons/Book';
+import MusicVideoIcon from '@material-ui/icons/MusicVideo';
 import { connect } from 'react-redux';
 import { loadMyPad } from '../../store/_actions/padActions';
 import { loadMyShift } from '../../store/_actions/shiftActions';
@@ -131,7 +132,7 @@ function ManagerDashboard(props) {
             <Link className='link' to={`/go-jam/ManagerDashboard/Booking`}>
               <ListItem button>
                 <ListItemIcon>
-                  <PeopleIcon />
+                  <BookIcon />
                 </ListItemIcon>
                 <ListItemText className='dashText' primary='Booking' />
               </ListItem>
@@ -139,17 +140,9 @@ function ManagerDashboard(props) {
             <Link className='link' to={`/go-jam/ManagerDashboard/PadInfo`}>
               <ListItem button>
                 <ListItemIcon>
-                  <BarChartIcon />
+                  <MusicVideoIcon />
                 </ListItemIcon>
                 <ListItemText className='dashText' primary='Pad Info' />
-              </ListItem>
-            </Link>
-            <Link className='link' to={`/go-jam/ManagerDashboard/Manager`}>
-              <ListItem button>
-                <ListItemIcon>
-                  <LayersIcon />
-                </ListItemIcon>
-                <ListItemText className='dashText' primary='Manager' />
               </ListItem>
             </Link>
           </div>
@@ -170,10 +163,6 @@ function ManagerDashboard(props) {
             <Route
               path='/go-jam/ManagerDashboard/PadInfo'
               render={() => <PadInfo pad={mypad} />}
-            />
-            <Route
-              path='/go-jam/ManagerDashboard/Manager'
-              render={() => <Manager />}
             />
           </Switch>
         </Container>

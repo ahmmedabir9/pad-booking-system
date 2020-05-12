@@ -30,18 +30,18 @@ export const removeMyBooking = (id) => (dispatch) => {
         payload: { id: response.data._id },
       });
     })
-    .catch();
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 export const updateMyBooking = (id, booking) => (dispatch) => {
   axios
     .put(`${serverURL}managebooking/${id}`, booking)
     .then((response) => {
-      console.log(response.data.Booking);
-
       dispatch({
         type: Types.UPDATE_MYBOOKING,
-        payload: { mybooking: response.data.Booking },
+        payload: { mybooking: response.data.booking },
       });
     })
     .catch((error) => {

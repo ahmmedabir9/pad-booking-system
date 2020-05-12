@@ -16,7 +16,7 @@ export const register = (user, history) => (dispatch) => {
             error: {},
           },
         });
-        history.push('/Login');
+        history.push('/go-jam/Login');
       }
     })
     .catch((error) => {
@@ -39,7 +39,6 @@ export const login = (user, history) => (dispatch) => {
       localStorage.setItem('auth_token', token);
       setAuthToken(token);
       let decode = jwtDecode(token);
-      console.log(decode);
 
       dispatch({
         type: Types.SET_USER,
@@ -47,10 +46,9 @@ export const login = (user, history) => (dispatch) => {
           user: decode,
         },
       });
-      history.push('/ManagerDashboard');
+      history.push('/go-jam/ManagerDashboard');
     })
     .catch((error) => {
-      console.log(error.response.data);
       dispatch({
         type: Types.USERS_ERROR,
         payload: {
@@ -67,5 +65,5 @@ export const logout = (history) => {
       user: {},
     },
   };
-  history.push('/Login');
+  history.push('/go-jam/Login');
 };

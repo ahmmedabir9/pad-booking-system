@@ -30,7 +30,7 @@ function NavBar() {
         </Link>
         <div className={classes.grow} />
 
-        {/* <Link className='link' to='/go-jam'>
+        <Link className='link' to='/go-jam/Track-My-Booking'>
           <Button
             variant='contained'
             color='danger'
@@ -39,7 +39,7 @@ function NavBar() {
           >
             My Booking
           </Button>
-        </Link> */}
+        </Link>
       </Toolbar>
     </AppBar>
   );

@@ -1,51 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+
 import { makeStyles } from '@material-ui/core/styles';
 import { Table, TableContainer } from '@material-ui/core';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Title from './Components/Title';
-import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import UpdateBooking from './Components/UpdateBooking';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Avatar from '@material-ui/core/Avatar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import PrimaryButton from '../../Components/Buttons/PrimaryButton';
-import Container from '@material-ui/core/Container';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import { Dialog, Icon, IconButton } from '@material-ui/core';
+import { Paper, Icon, IconButton } from '@material-ui/core';
 import {
   loadMyBooking,
   removeMyBooking,
   updateMyBooking,
 } from '../../store/_actions/bookingAction';
-import {
-  green,
-  red,
-  deepOrange,
-  indigo,
-  amber,
-  grey,
-} from '@material-ui/core/colors';
-import { loadMyPad } from '../../store/_actions/padActions';
+import { green, red, amber, grey } from '@material-ui/core/colors';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 const useStyles = makeStyles((theme) => ({
@@ -82,6 +54,11 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     fontWeight: 700,
   },
+  paper: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: 10,
+  },
 }));
 
 function Booking(props) {
@@ -106,7 +83,7 @@ function Booking(props) {
   return (
     <React.Fragment>
       {mybooking[0] ? (
-        <div>
+        <Paper className={classes.paper}>
           <Typography
             component='h2'
             variant='h6'
@@ -178,7 +155,7 @@ function Booking(props) {
               shift={shift}
             />
           </TableContainer>
-        </div>
+        </Paper>
       ) : (
         <div className={classes.notFound}>
           <ErrorOutlineIcon className={classes.errorIcon} />
